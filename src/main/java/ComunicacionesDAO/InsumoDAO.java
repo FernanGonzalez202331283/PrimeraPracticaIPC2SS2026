@@ -6,6 +6,7 @@ package ComunicacionesDAO;
 
 import conexion.ConexionDAO;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,25 +26,25 @@ public class InsumoDAO {
     }
     
     
-    public static final String INSERTAR_INSUMO =
-            """
-            INSERT INTO insumo
-            (nombre, unidad_medida, stock_actual, stock_minimo, costo)
-            VALUES ('%s', '%s', %.2f, %.2f, %.2f)
-            """;
+   public static final String INSERTAR_INSUMO =
+        """
+        INSERT INTO insumo
+        (nombre, unidad_medida, stock_actual, stock_minimo, costo)
+        VALUES (?, ?, ?, ?, ?)
+        """;
     
     public static final String CONSULTAR_INSUMO = 
             "SELECT * FROM insumo";
     
-    public static final String ACTUALIZAR_INSUMO = 
+    public static final String ACTUALIZAR_INSUMO =
             """
             UPDATE insumo
-            SET nombre = '%s',
-            unidad_medida = '%s',
-            stock_actual = %.2f,
-            stock_minimo = %.2f,
-            costo = %.2f
-            WHERE codigo_insumo = %d
+            SET nombre = ?,
+                unidad_medida = ?,
+                stock_actual = ?,
+                stock_minimo = ?,
+                costo = ?
+            WHERE codigo_insumo = ?
             """;
     
      public static final String CONSULTAR_BAJO_STOCK =
@@ -80,21 +81,22 @@ public class InsumoDAO {
                 costo
         );
         
-        String insert = String.format(
-        java.util.Locale.US,
-        INSERTAR_INSUMO,
-        insumo.getNombre(),
-        insumo.getUnidadMedida(),
-        insumo.getStockActual(),
-        insumo.getStockMinimo(),
-        insumo.getCosto()
-        );
-        
-        try {
-            Statement statement = connection.createStatement();
-            int filas = statement.executeUpdate(insert);
-            System.out.println("Insumo registrado correctamente");
-            System.out.println("filas insertadas: "+filas);
+       try {
+
+            PreparedStatement statement =
+                    connection.prepareStatement(INSERTAR_INSUMO);
+
+            statement.setString(1, insumo.getNombre());
+            statement.setString(2, insumo.getUnidadMedida());
+            statement.setDouble(3, insumo.getStockActual());
+            statement.setDouble(4, insumo.getStockMinimo());
+            statement.setDouble(5, insumo.getCosto());
+
+            int filas = statement.executeUpdate();
+
+            System.out.println("Insumo registrado correctamente.");
+            System.out.println("Filas insertadas: " + filas);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -205,33 +207,29 @@ public class InsumoDAO {
 
     System.out.println("Ingrese el nuevo costo:");
     double costo = scanner.nextDouble();
-
-    String update = String.format(
-            java.util.Locale.US,
-            ACTUALIZAR_INSUMO,
-            nombre,
-            unidad,
-            stockActual,
-            stockMinimo,
-            costo,
-            codigo
-    );
-
     try {
 
-        Statement statement = connection.createStatement();
+    PreparedStatement statement =
+            connection.prepareStatement(ACTUALIZAR_INSUMO);
 
-        int filas = statement.executeUpdate(update);
+    statement.setString(1, nombre);
+    statement.setString(2, unidad);
+    statement.setDouble(3, stockActual);
+    statement.setDouble(4, stockMinimo);
+    statement.setDouble(5, costo);
+    statement.setInt(6, codigo);
 
-        if (filas > 0) {
-            System.out.println("Insumo actualizado correctamente.");
-        } else {
-            System.out.println("No existe un insumo con ese código.");
-        }
+    int filas = statement.executeUpdate();
 
-    } catch (SQLException e) {
-        e.printStackTrace();
+    if (filas > 0) {
+        System.out.println("Insumo actualizado correctamente.");
+    } else {
+        System.out.println("No existe un insumo con ese código.");
     }
+
+} catch (SQLException e) {
+    e.printStackTrace();
+}
 
 }
 }

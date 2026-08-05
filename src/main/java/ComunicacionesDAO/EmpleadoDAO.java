@@ -6,6 +6,7 @@ package ComunicacionesDAO;
 
 import conexion.ConexionDAO;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -26,32 +27,32 @@ public class EmpleadoDAO {
 
     }
     
-    public static final String INSERTAR_EMPLEADO="""
+    public static final String INSERTAR_EMPLEADO = """
         INSERT INTO empleado
         (dpi, nombre, rol, jornada, salario, fecha_contratacion, estado)
-        VALUES('%s', '%s','%s','%s', %.2f, '%s',%b)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
         """;
     
-    public static final String CONSULTAR_EMPLEADO =
-            "SELECT * FROM empleado";
+   public static final String CONSULTAR_EMPLEADO =
+        "SELECT * FROM empleado";
     
-    public static final String ACTUALIZAR_EMPLEADO = 
-            """
-            UPDATE empleado
-            SET nombre = '%s',
-            rol = '%s',
-            jornada = '%s',
-            salario = %.2f,
-            fecha_contratacion = '%s'
-            WHERE dpi = '%s'
-            """;
+    public static final String ACTUALIZAR_EMPLEADO =
+        """
+        UPDATE empleado
+        SET nombre = ?,
+            rol = ?,
+            jornada = ?,
+            salario = ?,
+            fecha_contratacion = ?
+        WHERE dpi = ?
+        """;
     
-    public static final String DESHABILITAR_EMPLEADO = 
-            """
-            UPDATE empleado
-            SET estado = false
-            WHERE dpi = '%s'
-            """;
+    public static final String DESHABILITAR_EMPLEADO =
+        """
+        UPDATE empleado
+        SET estado = false
+        WHERE dpi = ?
+        """;
     
     public void insertarEmpleado(){
         Scanner scanner = new Scanner(System.in);
@@ -84,40 +85,37 @@ public class EmpleadoDAO {
                 true
         );
         
-    String insert = String.format(
-            java.util.Locale.US,
-            INSERTAR_EMPLEADO,
-            empleado.getDpi(),
-            empleado.getNombre(),
-            empleado.getRol(),
-            empleado.getJornada(),
-            empleado.getSalario(),
-            empleado.getFechaContratacion(),
-            empleado.isEstado()
-    );
-
     try {
 
-        Statement insertStatement = connection.createStatement();
-        System.out.println(insert);
-        int filas = insertStatement.executeUpdate(insert);
-        System.out.println("Empleado registrado correctamente.");
-        System.out.println("Filas insertadas: " + filas);
+    PreparedStatement insertStatement =
+            connection.prepareStatement(INSERTAR_EMPLEADO);
 
-    } catch (SQLException e) {
+    insertStatement.setString(1, empleado.getDpi());
+    insertStatement.setString(2, empleado.getNombre());
+    insertStatement.setString(3, empleado.getRol());
+    insertStatement.setString(4, empleado.getJornada());
+    insertStatement.setDouble(5, empleado.getSalario());
+    insertStatement.setString(6, empleado.getFechaContratacion());
+    insertStatement.setBoolean(7, empleado.isEstado());
 
-        e.printStackTrace();
+    int filas = insertStatement.executeUpdate();
 
-    }
+    System.out.println("Empleado registrado correctamente.");
+    System.out.println("Filas insertadas: " + filas);
+
+} catch (SQLException e) {
+
+    e.printStackTrace();
+
+}
         
     }
     public void listarEmpleados() {
 
     try {
-
-        Statement consulta = connection.createStatement();
-
-        ResultSet resultado = consulta.executeQuery(CONSULTAR_EMPLEADO);
+        PreparedStatement consulta =
+        connection.prepareStatement(CONSULTAR_EMPLEADO);
+ResultSet resultado = consulta.executeQuery();
 
         while (resultado.next()) {
 
@@ -161,34 +159,32 @@ public class EmpleadoDAO {
 
     System.out.println("Ingrese nueva fecha de contratación (AAAA-MM-DD):");
     String fecha = scanner.nextLine();
-
-    String update = String.format(
-            java.util.Locale.US,
-            ACTUALIZAR_EMPLEADO,
-            nombre,
-            rol,
-            jornada,
-            salario,
-            fecha,
-            dpi
-    );
-
     try {
 
-        Statement updateStatement = connection.createStatement();
+    PreparedStatement updateStatement =
+            connection.prepareStatement(ACTUALIZAR_EMPLEADO);
 
-        System.out.println(update);
+    updateStatement.setString(1, nombre);
+    updateStatement.setString(2, rol);
+    updateStatement.setString(3, jornada);
+    updateStatement.setDouble(4, salario);
+    updateStatement.setString(5, fecha);
+    updateStatement.setString(6, dpi);
 
-        int filas = updateStatement.executeUpdate(update);
+    int filas = updateStatement.executeUpdate();
 
+    if (filas > 0) {
         System.out.println("Empleado actualizado correctamente.");
         System.out.println("Filas actualizadas: " + filas);
-
-    } catch (SQLException e) {
-
-        e.printStackTrace();
-
+    } else {
+        System.out.println("No existe un empleado con ese DPI.");
     }
+
+} catch (SQLException e) {
+
+    e.printStackTrace();
+
+}
 
 }
     public void deshabilitarEmpleado() {
@@ -198,28 +194,27 @@ public class EmpleadoDAO {
     System.out.println("Ingrese el DPI del empleado:");
 
     String dpi = scanner.nextLine();
-
-    String update = String.format(
-            DESHABILITAR_EMPLEADO,
-            dpi
-    );
-
     try {
 
-        Statement updateStatement = connection.createStatement();
+    PreparedStatement updateStatement =
+            connection.prepareStatement(DESHABILITAR_EMPLEADO);
 
-        System.out.println(update);
+    updateStatement.setString(1, dpi);
 
-        int filas = updateStatement.executeUpdate(update);
+    int filas = updateStatement.executeUpdate();
 
+    if (filas > 0) {
         System.out.println("Empleado deshabilitado correctamente.");
         System.out.println("Filas afectadas: " + filas);
-
-    } catch (SQLException e) {
-
-        e.printStackTrace();
-
+    } else {
+        System.out.println("No existe un empleado con ese DPI.");
     }
+
+} catch (SQLException e) {
+
+    e.printStackTrace();
+
+}
 
 }
 }
