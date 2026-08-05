@@ -5,6 +5,7 @@
 package com.mycompany.primerapracticaipc2ss2026;
 
 import ComunicacionesDAO.EmpleadoDAO;
+import ComunicacionesDAO.InsumoDAO;
 import ComunicacionesDAO.NominaDAO;
 import conexion.ConexionDAO;
 import java.util.Scanner;
@@ -18,7 +19,7 @@ public class PrimeraPracticaIPC2SS2026 {
     public static void main(String[] args) {
        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
        NominaDAO nominaDAO = new NominaDAO();
-
+       InsumoDAO insumoDAO = new InsumoDAO();
 Scanner scanner = new Scanner(System.in);
 
 int opcion;
@@ -36,6 +37,11 @@ System.out.println("\n----- NOMINAS -----");
 System.out.println("5. Registrar nómina");
 System.out.println("6. Listar nóminas");
 System.out.println("7. Marcar nómina como pagada");
+System.out.println("\n -- INSUMOS----");
+    System.out.println("8. registrar insumo: ");    
+    System.out.println("9. Listar insumo: ");    
+    System.out.println("10'. actualizar insumo:  ");    
+    System.out.println("11'. insumo de bajo stock:  ");    
 
 System.out.println("\n0. Salir");
 System.out.print("Seleccione una opción: ");
@@ -72,6 +78,21 @@ System.out.print("Seleccione una opción: ");
     case 7:
         nominaDAO.pagarNomina();
         break;
+        case 8:
+    insumoDAO.insertarInsumo();
+    break;
+
+case 9:
+    insumoDAO.listarInsumos();
+    break;
+
+case 10:
+    insumoDAO.actualizarInsumo();
+    break;
+
+case 11:
+    insumoDAO.listarBajoStock();
+    break;
 
     case 0:
         System.out.println("Saliendo...");
@@ -81,7 +102,7 @@ System.out.print("Seleccione una opción: ");
         System.out.println("Opción inválida.");
     }
 
-} while (opcion != 5);
+} while (opcion != 0);
         
     }
 }
