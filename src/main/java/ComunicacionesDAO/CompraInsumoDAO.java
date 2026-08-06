@@ -22,43 +22,45 @@ public class CompraInsumoDAO {
         connection = conexionDAO.Connectar();
     }
     
-    public static final String INSERTAR_COMPRA =
-"""
-INSERT INTO compra_insumo
-(fecha,total)
-VALUES(?,0)
-""";
+   public static final String INSERTAR_COMPRA =
+            """
+            INSERT INTO compra_insumo
+            (fecha,total)
+            VALUES (?,0)
+            """;
 
-public static final String INSERTAR_DETALLE =
-"""
-INSERT INTO detalle_compra
-(id_compra,codigo_insumo,cantidad,precio_unitario,subtotal)
-VALUES(?,?,?,?,?)
-""";
+    public static final String INSERTAR_DETALLE =
+            """
+            INSERT INTO detalle_compra
+            (id_compra,codigo_insumo,cantidad,precio_unitario,subtotal)
+            VALUES(?,?,?,?,?)
+            """;
 
-public static final String ACTUALIZAR_STOCK =
-"""
-UPDATE insumo
-SET stock_actual = stock_actual + ?
-WHERE codigo_insumo = ?
-""";
+    public static final String ACTUALIZAR_STOCK =
+        """
+        UPDATE insumo
+        SET stock_actual = stock_actual + ?
+        WHERE codigo_insumo = ?
+        """;
 
-public static final String ACTUALIZAR_TOTAL =
-"""
-UPDATE compra_insumo
-SET total = ?
-WHERE id_compra = ?
-""";
+        public static final String ACTUALIZAR_TOTAL =
+        """
+        UPDATE compra_insumo
+        SET total = ?
+        WHERE id_compra = ?
+        """;
 
-public static final String CONSULTAR_COMPRAS =
-"""
-SELECT *
-FROM compra_insumo
-ORDER BY id_compra
-""";
+    public static final String CONSULTAR_COMPRAS =
+        """
+        SELECT *
+        FROM compra_insumo
+        ORDER BY id_compra
+        """;
+    
+   public void registrarCompra() {
 
-    public void registrarCompra() {
     Scanner scanner = new Scanner(System.in);
+
     try {
         connection.setAutoCommit(false);
         System.out.println("Ingrese la fecha de la compra (AAAA-MM-DD):");
@@ -68,12 +70,17 @@ ORDER BY id_compra
         insertarCompra.setString(1, fecha);
         insertarCompra.executeUpdate();
         int idCompra = obtenerUltimoIdCompra();
+
+
         if(idCompra == -1){
+
             throw new SQLException(
                     "No se pudo obtener el codigo de compra"
             );
+
         }
         System.out.println("¿Cuantos insumos desea registrar?");
+
         int cantidadInsumos = scanner.nextInt();
         double totalCompra = 0;
         for(int i = 1; i <= cantidadInsumos; i++){
@@ -121,10 +128,10 @@ ORDER BY id_compra
             );
         } catch(SQLException ex){
             ex.printStackTrace();
+
         }
         e.printStackTrace();
     } finally {
-
         try {
             connection.setAutoCommit(true);
         } catch(SQLException e){
@@ -162,7 +169,7 @@ ORDER BY id_compra
 
     }
 
-    public int obtenerUltimoIdCompra() {
+   public int obtenerUltimoIdCompra() {
 
     try {
 

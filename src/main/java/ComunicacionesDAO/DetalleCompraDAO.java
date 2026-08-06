@@ -16,8 +16,6 @@ import java.util.Scanner;
  * @author fernan
  */
 public class DetalleCompraDAO {
-    
-    
     private Connection connection;
 
 
@@ -128,4 +126,5 @@ public class DetalleCompraDAO {
 
 
     }
+
 }
