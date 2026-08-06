@@ -4,6 +4,13 @@
  */
 package Vistas;
 
+import ComunicacionesDAO.EmpleadoDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Empleado;
+
 /**
  *
  * @author fernan
@@ -15,8 +22,32 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
      */
     public EmpleadoFrame() {
         initComponents();
+        cargarRol();
+        cargarJornada();
+        cargarTabla();
     }
+    
+    
+    private void cargarRol() {
 
+    cmbRol.removeAllItems();
+
+    cmbRol.addItem("MESERO");
+    cmbRol.addItem("COCINA");
+    cmbRol.addItem("BARISTA");
+    cmbRol.addItem("ADMINISTRADOR");
+
+}
+    
+    private void cargarJornada() {
+
+    cmbJornada.removeAllItems();
+
+    cmbJornada.addItem("MATUTINA");
+    cmbJornada.addItem("VESPERTINA");
+    cmbJornada.addItem("NOCTURNA");
+
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,30 +58,341 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtDpi = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        cmbRol = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        cmbJornada = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        txtSalario = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtFecha = new javax.swing.JTextField();
+        btnRegistrar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnDeshabilitar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        scrollEmpleados = new javax.swing.JScrollPane();
+        tblEmpleados = new javax.swing.JTable();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("DPI");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+        jLabel1.setText("Ingrese DPI: ");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, -1, 20));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtDpi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtDpiActionPerformed(evt);
             }
         });
-        getContentPane().add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 20, 300, -1));
+        getContentPane().add(txtDpi, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, 300, 40));
+
+        jLabel2.setText("Ingrese Nombre: ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 340, -1, -1));
+
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 300, 40));
+
+        jLabel3.setText("Seleccione un Rol: ");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, -1, -1));
+
+        cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cmbRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 410, 300, 30));
+
+        jLabel4.setText("Seleccione una Jornada: ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 490, -1, -1));
+
+        cmbJornada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cmbJornada, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 480, 310, 30));
+
+        jLabel5.setText("Ingrese Salario: ");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 550, -1, 30));
+
+        txtSalario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSalarioActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 550, 300, 30));
+
+        jLabel6.setText("Ingrese Fecha: ");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 620, -1, -1));
+
+        txtFecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFechaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 610, 300, 40));
+
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 690, -1, -1));
+
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 690, -1, -1));
+
+        btnDeshabilitar.setText("Deshabilitar");
+        btnDeshabilitar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeshabilitarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnDeshabilitar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 690, -1, -1));
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 690, -1, -1));
+
+        tblEmpleados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "DPI", "Nombre", "Rol", "Jornada", "Salario", "Fecha", "Estado"
+            }
+        ));
+        scrollEmpleados.setViewportView(tblEmpleados);
+
+        jScrollPane1.setViewportView(scrollEmpleados);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 580, 140));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtDpiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDpiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtDpiActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void txtSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSalarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtSalarioActionPerformed
+
+    private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaActionPerformed
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        // TODO add your handling code here:
+           if (!validarDatos()) {
+        return;
+    }
+        String dpi = txtDpi.getText();
+        String nombre = txtNombre.getText();
+        String rol = cmbRol.getSelectedItem().toString();
+        String jornada = cmbJornada.getSelectedItem().toString();
+        double salario = Double.parseDouble(txtSalario.getText());
+        String fecha = txtFecha.getText();
+        
+        Empleado empleado = new Empleado(
+            dpi,
+            nombre,
+            rol,
+            jornada,
+            salario,
+            fecha,
+            true
+    );
+
+    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+
+    empleadoDAO.insertarEmpleado(empleado);
+    
+    limpiarCampos();
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void cargarTabla() {
+
+    DefaultTableModel modelo =
+            (DefaultTableModel) tblEmpleados.getModel();
+
+    modelo.setRowCount(0);
+
+    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+
+    ResultSet resultado = empleadoDAO.obtenerEmpleados();
+
+    try {
+
+        while (resultado.next()) {
+
+            Object[] fila = {
+
+                resultado.getString("dpi"),
+                resultado.getString("nombre"),
+                resultado.getString("rol"),
+                resultado.getString("jornada"),
+                resultado.getDouble("salario"),
+                resultado.getDate("fecha_contratacion"),
+                resultado.getBoolean("estado")
+
+            };
+
+            modelo.addRow(fila);
+
+        }
+
+    } catch (SQLException e) {
+
+        e.printStackTrace();
+
+    }
+
+}
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnDeshabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshabilitarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeshabilitarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnDeshabilitar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnRegistrar;
+    private javax.swing.JComboBox<String> cmbJornada;
+    private javax.swing.JComboBox<String> cmbRol;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane scrollEmpleados;
+    private javax.swing.JTable tblEmpleados;
+    private javax.swing.JTextField txtDpi;
+    private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtSalario;
     // End of variables declaration//GEN-END:variables
+    private boolean validarDatos() {
+
+    if (txtDpi.getText().trim().isEmpty()) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Debe ingresar el DPI."
+        );
+
+        txtDpi.requestFocus();
+        return false;
+    }
+
+    if (txtNombre.getText().trim().isEmpty()) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Debe ingresar el nombre."
+        );
+
+        txtNombre.requestFocus();
+        return false;
+    }
+
+    if (txtSalario.getText().trim().isEmpty()) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Debe ingresar el salario."
+        );
+
+        txtSalario.requestFocus();
+        return false;
+    }
+
+    double salario;
+
+    try {
+
+        salario = Double.parseDouble(txtSalario.getText());
+
+    } catch (NumberFormatException e) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "El salario debe ser un número."
+        );
+
+        txtSalario.requestFocus();
+        return false;
+
+    }
+
+    if (salario <= 0) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "El salario debe ser mayor que cero."
+        );
+
+        txtSalario.requestFocus();
+        return false;
+    }
+
+    if (txtFecha.getText().trim().isEmpty()) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Debe ingresar la fecha de contratación."
+        );
+
+        txtFecha.requestFocus();
+        return false;
+    }
+
+    return true;
+
+}
+    private void limpiarCampos() {
+
+    txtDpi.setText("");
+    txtNombre.setText("");
+    txtSalario.setText("");
+    txtFecha.setText("");
+
+    cmbRol.setSelectedIndex(0);
+    cmbJornada.setSelectedIndex(0);
+
+    txtDpi.requestFocus();
+
+}
 }

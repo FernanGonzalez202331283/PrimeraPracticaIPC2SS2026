@@ -54,62 +54,34 @@ public class EmpleadoDAO {
         WHERE dpi = ?
         """;
     
-    public void insertarEmpleado(){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Ingrese DPI: ");
-        String dpi = scanner.nextLine();
-        
-        System.out.println("Ingrese nombre: ");
-        String nombre = scanner.nextLine();
-        
-        System.out.println("Ingrese rol: ");
-        String rol = scanner.nextLine();
-        
-        System.out.println("Ingrese jornada: ");
-        String jornada = scanner.nextLine();
-        
-        System.out.println("Ingrese salario: ");
-        Double salario = scanner.nextDouble();
-        scanner.nextLine();
-        
-        System.out.println("Ingrese fecha de contratacion (AA-MM-DD): ");
-        String fecha = scanner.nextLine();
-        
-        Empleado empleado = new Empleado(
-                dpi,
-                nombre,
-                rol,
-                jornada,
-                salario,
-                fecha,
-                true
-        );
-        
+    public void insertarEmpleado(Empleado empleado) {
+
     try {
 
-    PreparedStatement insertStatement =
-            connection.prepareStatement(INSERTAR_EMPLEADO);
+        PreparedStatement insertStatement =
+                connection.prepareStatement(INSERTAR_EMPLEADO);
 
-    insertStatement.setString(1, empleado.getDpi());
-    insertStatement.setString(2, empleado.getNombre());
-    insertStatement.setString(3, empleado.getRol());
-    insertStatement.setString(4, empleado.getJornada());
-    insertStatement.setDouble(5, empleado.getSalario());
-    insertStatement.setString(6, empleado.getFechaContratacion());
-    insertStatement.setBoolean(7, empleado.isEstado());
+        insertStatement.setString(1, empleado.getDpi());
+        insertStatement.setString(2, empleado.getNombre());
+        insertStatement.setString(3, empleado.getRol());
+        insertStatement.setString(4, empleado.getJornada());
+        insertStatement.setDouble(5, empleado.getSalario());
+        insertStatement.setString(6, empleado.getFechaContratacion());
+        insertStatement.setBoolean(7, empleado.isEstado());
 
-    int filas = insertStatement.executeUpdate();
+        int filas = insertStatement.executeUpdate();
 
-    System.out.println("Empleado registrado correctamente.");
-    System.out.println("Filas insertadas: " + filas);
+        if (filas > 0) {
+            System.out.println("Empleado registrado correctamente.");
+        }
 
-} catch (SQLException e) {
+    } catch (SQLException e) {
 
-    e.printStackTrace();
+        e.printStackTrace();
+
+    }
 
 }
-        
-    }
     public void listarEmpleados() {
 
     try {
@@ -215,6 +187,24 @@ ResultSet resultado = consulta.executeQuery();
     e.printStackTrace();
 
 }
+
+}
+    public ResultSet obtenerEmpleados() {
+
+    try {
+
+        PreparedStatement consulta =
+                connection.prepareStatement(CONSULTAR_EMPLEADO);
+
+        return consulta.executeQuery();
+
+    } catch (SQLException e) {
+
+        e.printStackTrace();
+
+    }
+
+    return null;
 
 }
 }
