@@ -92,6 +92,11 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         Nomina.setText("Nominas");
 
         menuNomina.setText("Gestionar Nominas");
+        menuNomina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuNominaActionPerformed(evt);
+            }
+        });
         Nomina.add(menuNomina);
 
         jMenuBar1.add(Nomina);
@@ -99,9 +104,19 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         inventario.setText("Inventario");
 
         menuInsumo.setText("Insumos");
+        menuInsumo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuInsumoActionPerformed(evt);
+            }
+        });
         inventario.add(menuInsumo);
 
         menuCompra.setText("Compras");
+        menuCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCompraActionPerformed(evt);
+            }
+        });
         inventario.add(menuCompra);
 
         jMenuBar1.add(inventario);
@@ -109,9 +124,19 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         Menu.setText("Menu");
 
         menuProducto.setText("Productos");
+        menuProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProductoActionPerformed(evt);
+            }
+        });
         Menu.add(menuProducto);
 
         menuReceta.setText("Recetas");
+        menuReceta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuRecetaActionPerformed(evt);
+            }
+        });
         Menu.add(menuReceta);
 
         jMenuBar1.add(Menu);
@@ -119,6 +144,11 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         mesa.setText("Mesas");
 
         menuMesa.setText("Gestionar Mesas");
+        menuMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuMesaActionPerformed(evt);
+            }
+        });
         mesa.add(menuMesa);
 
         jMenuBar1.add(mesa);
@@ -126,9 +156,19 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         cuenta.setText("Cuenta");
 
         menuCuenta.setText("Abrir Cuenta");
+        menuCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuCuentaActionPerformed(evt);
+            }
+        });
         cuenta.add(menuCuenta);
 
         menuDetalleCuenta.setText("Detalle Cuenta");
+        menuDetalleCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuDetalleCuentaActionPerformed(evt);
+            }
+        });
         cuenta.add(menuDetalleCuenta);
 
         jMenuBar1.add(cuenta);
@@ -136,12 +176,27 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         reportes.setText("Reportes");
 
         menuFlujoCaja.setText("Flujo De La Caja");
+        menuFlujoCaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuFlujoCajaActionPerformed(evt);
+            }
+        });
         reportes.add(menuFlujoCaja);
 
         menuProductosVendidos.setText("Productos  mas vendidos¨");
+        menuProductosVendidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuProductosVendidosActionPerformed(evt);
+            }
+        });
         reportes.add(menuProductosVendidos);
 
         menuStock.setText("Insumos bajo Stock");
+        menuStock.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuStockActionPerformed(evt);
+            }
+        });
         reportes.add(menuStock);
 
         jMenuBar1.add(reportes);
@@ -158,35 +213,89 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
     private void menuEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEmpleadoActionPerformed
        EmpleadoFrame empleado = new EmpleadoFrame();
 
-    desktopPane.add(empleado);
+        desktopPane.add(empleado);
 
-    empleado.setVisible(true);
+        empleado.setVisible(true);
     }//GEN-LAST:event_menuEmpleadoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void menuNominaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNominaActionPerformed
+        NominaFrame nomina = new NominaFrame();
+        desktopPane.add(nomina);
+        nomina.setVisible(true);
+    }//GEN-LAST:event_menuNominaActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new FrmVentaPrincipal().setVisible(true));
-    }
+    private void menuInsumoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuInsumoActionPerformed
+        // TODO add your handling code here:
+        InsumoFrame insumo = new InsumoFrame();
+        desktopPane.add(insumo);
+        insumo.setVisible(true);
+    }//GEN-LAST:event_menuInsumoActionPerformed
+
+    private void menuCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCompraActionPerformed
+        // TODO add your handling code here:
+        CompraInsumoFrame compraInsumo = new CompraInsumoFrame();
+        desktopPane.add(compraInsumo);
+        compraInsumo.setVisible(true);
+    }//GEN-LAST:event_menuCompraActionPerformed
+
+    private void menuProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductoActionPerformed
+        // TODO add your handling code here:
+        ProductoFrame producto = new ProductoFrame();
+        desktopPane.add(producto);
+        producto.setVisible(true);
+    }//GEN-LAST:event_menuProductoActionPerformed
+
+    private void menuRecetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRecetaActionPerformed
+        // TODO add your handling code here:
+        RecetaFrame receta = new RecetaFrame();
+        desktopPane.add(receta);
+        receta.setVisible(true);
+    }//GEN-LAST:event_menuRecetaActionPerformed
+
+    private void menuMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMesaActionPerformed
+        // TODO add your handling code here:
+        MesaFrame mesa = new MesaFrame();
+        desktopPane.add(mesa);
+        mesa.setVisible(true);
+    }//GEN-LAST:event_menuMesaActionPerformed
+
+    private void menuCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCuentaActionPerformed
+        // TODO add your handling code here:
+        CuentaFrame cuenta = new CuentaFrame();
+        desktopPane.add(cuenta);
+        cuenta.setVisible(true);
+    }//GEN-LAST:event_menuCuentaActionPerformed
+
+    private void menuDetalleCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDetalleCuentaActionPerformed
+        // TODO add your handling code here:
+        DetalleCuentaFrame detalleCuenta = new DetalleCuentaFrame();
+        desktopPane.add(detalleCuenta);
+        detalleCuenta.setVisible(true);
+    }//GEN-LAST:event_menuDetalleCuentaActionPerformed
+
+    private void menuFlujoCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFlujoCajaActionPerformed
+        // TODO add your handling code here:
+        ReporteFrame reporte = new ReporteFrame();
+        //metodo para los reportes
+        desktopPane.add(reporte);
+        reporte.setVisible(true);
+    }//GEN-LAST:event_menuFlujoCajaActionPerformed
+
+    private void menuProductosVendidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductosVendidosActionPerformed
+        // TODO add your handling code here:
+         ReporteFrame reporte = new ReporteFrame();
+        //metodo para los reportes
+        desktopPane.add(reporte);
+        reporte.setVisible(true);
+    }//GEN-LAST:event_menuProductosVendidosActionPerformed
+
+    private void menuStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuStockActionPerformed
+        // TODO add your handling code here:
+         ReporteFrame reporte = new ReporteFrame();
+        //metodo para los reportes
+        desktopPane.add(reporte);
+        reporte.setVisible(true);
+    }//GEN-LAST:event_menuStockActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Menu;
