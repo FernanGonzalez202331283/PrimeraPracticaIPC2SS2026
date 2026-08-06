@@ -109,84 +109,87 @@ ResultSet resultado = consulta.executeQuery();
     }
 
 }
-    public void actualizarEmpleado() {
+    public void actualizarEmpleado(Empleado empleado) {
 
-    Scanner scanner = new Scanner(System.in);
-
-    System.out.println("Ingrese DPI del empleado a actualizar:");
-    String dpi = scanner.nextLine();
-
-    System.out.println("Ingrese nuevo nombre:");
-    String nombre = scanner.nextLine();
-
-    System.out.println("Ingrese nuevo rol:");
-    String rol = scanner.nextLine();
-
-    System.out.println("Ingrese nueva jornada:");
-    String jornada = scanner.nextLine();
-
-    System.out.println("Ingrese nuevo salario:");
-    Double salario = scanner.nextDouble();
-    scanner.nextLine();
-
-    System.out.println("Ingrese nueva fecha de contratación (AAAA-MM-DD):");
-    String fecha = scanner.nextLine();
     try {
 
-    PreparedStatement updateStatement =
-            connection.prepareStatement(ACTUALIZAR_EMPLEADO);
+        PreparedStatement updateStatement =
+                connection.prepareStatement(ACTUALIZAR_EMPLEADO);
 
-    updateStatement.setString(1, nombre);
-    updateStatement.setString(2, rol);
-    updateStatement.setString(3, jornada);
-    updateStatement.setDouble(4, salario);
-    updateStatement.setString(5, fecha);
-    updateStatement.setString(6, dpi);
+        updateStatement.setString(1, empleado.getNombre());
+        updateStatement.setString(2, empleado.getRol());
+        updateStatement.setString(3, empleado.getJornada());
+        updateStatement.setDouble(4, empleado.getSalario());
+        updateStatement.setString(5, empleado.getFechaContratacion());
+        updateStatement.setString(6, empleado.getDpi());
 
-    int filas = updateStatement.executeUpdate();
+        int filas = updateStatement.executeUpdate();
 
-    if (filas > 0) {
-        System.out.println("Empleado actualizado correctamente.");
-        System.out.println("Filas actualizadas: " + filas);
-    } else {
-        System.out.println("No existe un empleado con ese DPI.");
+        if (filas > 0) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "Empleado actualizado correctamente."
+            );
+
+        } else {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No existe un empleado con ese DPI."
+            );
+
+        }
+
+    } catch (SQLException e) {
+
+        e.printStackTrace();
+
+        javax.swing.JOptionPane.showMessageDialog(
+                null,
+                "Error al actualizar el empleado."
+        );
+
     }
 
-} catch (SQLException e) {
-
-    e.printStackTrace();
-
 }
+    public void deshabilitarEmpleado(String dpi) {
 
-}
-    public void deshabilitarEmpleado() {
-
-    Scanner scanner = new Scanner(System.in);
-
-    System.out.println("Ingrese el DPI del empleado:");
-
-    String dpi = scanner.nextLine();
     try {
 
-    PreparedStatement updateStatement =
-            connection.prepareStatement(DESHABILITAR_EMPLEADO);
+        PreparedStatement updateStatement =
+                connection.prepareStatement(DESHABILITAR_EMPLEADO);
 
-    updateStatement.setString(1, dpi);
+        updateStatement.setString(1, dpi);
 
-    int filas = updateStatement.executeUpdate();
+        int filas = updateStatement.executeUpdate();
 
-    if (filas > 0) {
-        System.out.println("Empleado deshabilitado correctamente.");
-        System.out.println("Filas afectadas: " + filas);
-    } else {
-        System.out.println("No existe un empleado con ese DPI.");
+        if (filas > 0) {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "Empleado deshabilitado correctamente."
+            );
+
+        } else {
+
+            javax.swing.JOptionPane.showMessageDialog(
+                    null,
+                    "No existe un empleado con ese DPI."
+            );
+
+        }
+
+    } catch (SQLException e) {
+
+        e.printStackTrace();
+
+        javax.swing.JOptionPane.showMessageDialog(
+                null,
+                "Error al deshabilitar el empleado."
+        );
+
     }
-
-} catch (SQLException e) {
-
-    e.printStackTrace();
-
-}
 
 }
     public ResultSet obtenerEmpleados() {

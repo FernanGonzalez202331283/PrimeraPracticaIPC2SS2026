@@ -76,6 +76,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         scrollEmpleados = new javax.swing.JScrollPane();
         tblEmpleados = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -178,11 +179,17 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
                 "DPI", "Nombre", "Rol", "Jornada", "Salario", "Fecha", "Estado"
             }
         ));
+        tblEmpleados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblEmpleadosMouseClicked(evt);
+            }
+        });
         scrollEmpleados.setViewportView(tblEmpleados);
 
         jScrollPane1.setViewportView(scrollEmpleados);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 580, 140));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 760, 850));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -272,15 +279,79 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
 }
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
+        if(!validarDatos()){
+            return;
+        }
+        String dpi = txtDpi.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String rol = cmbRol.getSelectedItem().toString();
+        String jornada = cmbJornada.getSelectedItem().toString();
+        Double salario = Double.parseDouble(txtSalario.getText());
+        String fecha = txtFecha.getText().trim();
+        
+        Empleado empleado = new Empleado(
+                dpi,
+                nombre,
+                rol,
+                jornada,
+                salario,
+                fecha,
+                true
+        );
+        
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+            empleadoDAO.actualizarEmpleado(empleado);
+            cargarTabla();
+            limpiarCampos();
+        
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnDeshabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshabilitarActionPerformed
         // TODO add your handling code here:
+        if(txtDpi.getText().trim().isEmpty()){
+            JOptionPane.showMessageDialog(this, "seleccione un empleado de la tabla");
+            return;
+        }
+        
+        int respuesta = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea deshabilitar este empleado?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (respuesta != JOptionPane.YES_OPTION) {
+            return;
+        }
+        
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+
+        empleadoDAO.deshabilitarEmpleado(
+                txtDpi.getText().trim()
+        );
+        cargarTabla();
+
+        limpiarCampos();
+        
     }//GEN-LAST:event_btnDeshabilitarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        // TODO add your handling code here:
+        limpiarCampos();
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void tblEmpleadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblEmpleadosMouseClicked
+        // TODO add your handling code here:
+        int fila = tblEmpleados.getSelectedRow();
+        
+        txtDpi.setText(tblEmpleados.getValueAt(fila, 0).toString());
+        txtNombre.setText(tblEmpleados.getValueAt(fila, 1).toString());
+        
+        cmbRol.setSelectedItem(tblEmpleados.getValueAt(fila, 2).toString());
+        cmbJornada.setSelectedItem(tblEmpleados.getValueAt(fila, 3).toString());
+        
+        txtSalario.setText(tblEmpleados.getValueAt(fila, 4).toString());
+        txtFecha.setText(tblEmpleados.getValueAt(fila, 5).toString());
+    }//GEN-LAST:event_tblEmpleadosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -296,6 +367,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane scrollEmpleados;
     private javax.swing.JTable tblEmpleados;
