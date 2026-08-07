@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 import modelo.Empleado;
 
 /**
@@ -26,6 +27,13 @@ public class EmpleadoDAO {
         connection = conexionDAO.Connectar();
 
     }
+    
+    public static final String OBTENER_ESTADO =
+        """
+        SELECT estado
+        FROM empleado
+        WHERE dpi = ?
+        """;
     
     public static final String INSERTAR_EMPLEADO = """
         INSERT INTO empleado
@@ -51,6 +59,13 @@ public class EmpleadoDAO {
         """
         UPDATE empleado
         SET estado = false
+        WHERE dpi = ?
+        """;
+    
+    public static final String CAMBIAR_ESTADO =
+        """
+        UPDATE empleado
+        SET estado = ?
         WHERE dpi = ?
         """;
     
@@ -153,6 +168,41 @@ ResultSet resultado = consulta.executeQuery();
     }
 
 }
+    
+    public void cambiarEstadoEmpleado(String dpi, boolean estado) {
+
+    try {
+        PreparedStatement ps = connection.prepareStatement(CAMBIAR_ESTADO);
+
+        ps.setBoolean(1, estado);
+        ps.setString(2, dpi);
+
+        int filas = ps.executeUpdate();
+
+        if (filas > 0) {
+
+            String mensaje = estado
+                    ? "Empleado habilitado correctamente."
+                    : "Empleado deshabilitado correctamente.";
+
+            JOptionPane.showMessageDialog(null, mensaje);
+
+        } else {
+
+            JOptionPane.showMessageDialog(null,
+                    "No existe un empleado con ese DPI.");
+
+        }
+
+    } catch (SQLException e) {
+
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null,
+                "Error al cambiar el estado del empleado.");
+
+    }
+
+}
     public void deshabilitarEmpleado(String dpi) {
 
     try {
@@ -208,6 +258,31 @@ ResultSet resultado = consulta.executeQuery();
     }
 
     return null;
+    }
+    
+    public boolean obtenerEstadoEmpleado(String dpi) {
 
+    try {
+
+        PreparedStatement ps =
+                connection.prepareStatement(OBTENER_ESTADO);
+
+        ps.setString(1, dpi);
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+
+            return rs.getBoolean("estado");
+
+        }
+
+    } catch (SQLException e) {
+
+        e.printStackTrace();
+
+    }
+
+    return false;
 }
 }

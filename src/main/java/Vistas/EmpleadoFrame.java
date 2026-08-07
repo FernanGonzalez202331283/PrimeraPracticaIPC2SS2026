@@ -138,7 +138,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
                 btnRegistrarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 690, -1, -1));
+        getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 690, 100, 50));
 
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -146,15 +146,15 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
                 btnActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 690, -1, -1));
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(284, 690, 100, 50));
 
-        btnDeshabilitar.setText("Deshabilitar");
+        btnDeshabilitar.setText("Deshabilitar/Activar");
         btnDeshabilitar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeshabilitarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDeshabilitar, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 690, -1, -1));
+        getContentPane().add(btnDeshabilitar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 690, -1, 50));
 
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
@@ -162,7 +162,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
                 btnLimpiarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 690, -1, -1));
+        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 700, 100, 40));
 
         tblEmpleados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -189,7 +189,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(scrollEmpleados);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 580, 140));
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 760, 850));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 760, 340, 50));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -307,31 +307,55 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnDeshabilitarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeshabilitarActionPerformed
-        // TODO add your handling code here:
-        if(txtDpi.getText().trim().isEmpty()){
-            JOptionPane.showMessageDialog(this, "seleccione un empleado de la tabla");
-            return;
-        }
-        
-        int respuesta = JOptionPane.showConfirmDialog(
+        if (txtDpi.getText().trim().isEmpty()) {
+
+        JOptionPane.showMessageDialog(
                 this,
-                "¿Desea deshabilitar este empleado?",
-                "Confirmación",
-                JOptionPane.YES_NO_OPTION
+                "Seleccione un empleado de la tabla"
         );
 
-        if (respuesta != JOptionPane.YES_OPTION) {
-            return;
-        }
-        
-        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        return;
+    }
 
-        empleadoDAO.deshabilitarEmpleado(
-                txtDpi.getText().trim()
-        );
-        cargarTabla();
+    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
 
-        limpiarCampos();
+    String dpi = txtDpi.getText().trim();
+
+    boolean estadoActual =
+            empleadoDAO.obtenerEstadoEmpleado(dpi);
+
+    String mensaje;
+
+    if (estadoActual) {
+
+        mensaje = "¿Desea deshabilitar este empleado?";
+
+    } else {
+
+        mensaje = "¿Desea habilitar este empleado?";
+
+    }
+
+    int respuesta = JOptionPane.showConfirmDialog(
+            this,
+            mensaje,
+            "Confirmación",
+            JOptionPane.YES_NO_OPTION
+    );
+
+    if (respuesta != JOptionPane.YES_OPTION) {
+        return;
+    }
+
+    empleadoDAO.cambiarEstadoEmpleado(
+            dpi,
+            !estadoActual
+    );
+
+    cargarTabla();
+    limpiarCampos();
+
+
         
     }//GEN-LAST:event_btnDeshabilitarActionPerformed
 

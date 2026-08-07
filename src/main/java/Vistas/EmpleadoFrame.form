@@ -170,7 +170,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="150" y="690" width="-1" height="-1"/>
+          <AbsoluteConstraints x="140" y="690" width="100" height="50"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -183,20 +183,20 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="320" y="690" width="-1" height="-1"/>
+          <AbsoluteConstraints x="284" y="690" width="100" height="50"/>
         </Constraint>
       </Constraints>
     </Component>
     <Component class="javax.swing.JButton" name="btnDeshabilitar">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Deshabilitar"/>
+        <Property name="text" type="java.lang.String" value="Deshabilitar/Activar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeshabilitarActionPerformed"/>
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="460" y="690" width="-1" height="-1"/>
+          <AbsoluteConstraints x="430" y="690" width="-1" height="50"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -209,7 +209,7 @@
       </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="600" y="690" width="-1" height="-1"/>
+          <AbsoluteConstraints x="620" y="700" width="100" height="40"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -254,7 +254,7 @@
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="0" y="0" width="760" height="850"/>
+          <AbsoluteConstraints x="440" y="760" width="340" height="50"/>
         </Constraint>
       </Constraints>
     </Component>
