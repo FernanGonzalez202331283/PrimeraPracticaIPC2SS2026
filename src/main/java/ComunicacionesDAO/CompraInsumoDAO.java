@@ -26,7 +26,7 @@ public class CompraInsumoDAO {
             """
             INSERT INTO compra_insumo
             (fecha,total)
-            VALUES (?,0)
+            VALUES (?,?)
             """;
 
     public static final String INSERTAR_DETALLE =
@@ -57,88 +57,102 @@ public class CompraInsumoDAO {
         ORDER BY id_compra
         """;
     
-   public void registrarCompra() {
-
-    Scanner scanner = new Scanner(System.in);
-
-    try {
-        connection.setAutoCommit(false);
-        System.out.println("Ingrese la fecha de la compra (AAAA-MM-DD):");
-        String fecha = scanner.nextLine();
-        PreparedStatement insertarCompra =
-                connection.prepareStatement(INSERTAR_COMPRA);
-        insertarCompra.setString(1, fecha);
-        insertarCompra.executeUpdate();
-        int idCompra = obtenerUltimoIdCompra();
-
-
-        if(idCompra == -1){
-
-            throw new SQLException(
-                    "No se pudo obtener el codigo de compra"
-            );
-
-        }
-        System.out.println("¿Cuantos insumos desea registrar?");
-
-        int cantidadInsumos = scanner.nextInt();
-        double totalCompra = 0;
-        for(int i = 1; i <= cantidadInsumos; i++){
-            System.out.println("---------------------------");
-            System.out.println("Insumo número: " + i);
-            System.out.println("Ingrese código del insumo:");
-            int codigoInsumo = scanner.nextInt();
-            System.out.println("Ingrese cantidad:");
-            double cantidad = scanner.nextDouble();
-            System.out.println("Ingrese precio unitario:");
-            double precio = scanner.nextDouble();
-            double subtotal = cantidad * precio;
-            totalCompra += subtotal;
-            PreparedStatement insertarDetalle =
-                    connection.prepareStatement(INSERTAR_DETALLE);
-            insertarDetalle.setInt(1, idCompra);
-            insertarDetalle.setInt(2, codigoInsumo);
-            insertarDetalle.setDouble(3, cantidad);
-            insertarDetalle.setDouble(4, precio);
-            insertarDetalle.setDouble(5, subtotal);
-            insertarDetalle.executeUpdate();
-            PreparedStatement actualizarStock =
-                    connection.prepareStatement(ACTUALIZAR_STOCK);
-            actualizarStock.setDouble(1, cantidad);
-            actualizarStock.setInt(2, codigoInsumo);
-            actualizarStock.executeUpdate();
-        }
-        PreparedStatement actualizarTotal =
-                connection.prepareStatement(ACTUALIZAR_TOTAL);
-        actualizarTotal.setDouble(1, totalCompra);
-        actualizarTotal.setInt(2, idCompra);
-        actualizarTotal.executeUpdate();
-        connection.commit();
-        System.out.println(
-                "Compra registrada correctamente."
-        );
-        System.out.println(
-                "Total de la compra: Q" + totalCompra
-        );
-    } catch(SQLException e){
+    public boolean registrarCompra(
+        String fecha,
+        double total,
+        int cantidadFilas,
+        int[] codigos,
+        double[] cantidades,
+        double[] precios,
+        double[] subtotales) {
         try {
-            connection.rollback();
-            System.out.println(
-                    "Error, la compra fue cancelada."
-            );
-        } catch(SQLException ex){
-            ex.printStackTrace();
+            connection.setAutoCommit(false);
+            // Registrar compra
+            PreparedStatement insertarCompra =
+                   connection.prepareStatement(INSERTAR_COMPRA);
+            insertarCompra.setString(1, fecha);
+            insertarCompra.setDouble(2, 0);
+            int filasCompra =
+                    insertarCompra.executeUpdate();
+            if (filasCompra == 0) {
+                connection.rollback();
+                return false;
+            }
+            int idCompra = obtenerUltimoIdCompra();
+            if (idCompra == -1) {
+                connection.rollback();
+                return false;
+            }
+            for (int i = 0; i < cantidadFilas; i++) {
+                PreparedStatement detalle =
+                        connection.prepareStatement(
+                                INSERTAR_DETALLE
+                        );
+                detalle.setInt(1, idCompra);
+                detalle.setInt(2, codigos[i]);
+                detalle.setDouble(3, cantidades[i]);
+                detalle.setDouble(4, precios[i]);
+                detalle.setDouble(5, subtotales[i]);
+                int filasDetalle =
+                        detalle.executeUpdate();
+                if (filasDetalle == 0) {
+                    connection.rollback();
+                    return false;
+                }
+                PreparedStatement stock =
+                        connection.prepareStatement(
+                                ACTUALIZAR_STOCK
+                        );
+                stock.setDouble(1, cantidades[i]);
+                stock.setInt(2, codigos[i]);
+                int filasStock =
+                        stock.executeUpdate();
+                if (filasStock == 0) {
+                    connection.rollback();
+                    return false;
+                }
+            }
+            PreparedStatement actualizarTotal =
+                    connection.prepareStatement(
+                            ACTUALIZAR_TOTAL
+                    );
+            actualizarTotal.setDouble(1, total);
+            actualizarTotal.setInt(2, idCompra);
 
-        }
-        e.printStackTrace();
-    } finally {
-        try {
-            connection.setAutoCommit(true);
-        } catch(SQLException e){
+            int filasTotal =
+                    actualizarTotal.executeUpdate();
+
+            if (filasTotal == 0) {
+                connection.rollback();
+                return false;
+            }
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+
+            } catch (SQLException ex) {
+
+                ex.printStackTrace();
+            }
+
             e.printStackTrace();
+
+            return false;
+
+        } finally {
+
+            try {
+
+                connection.setAutoCommit(true);
+
+            } catch (SQLException e) {
+
+                e.printStackTrace();
+            }
         }
     }
-}
 
     public void listarCompras() {
 

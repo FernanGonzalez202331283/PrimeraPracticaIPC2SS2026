@@ -11,14 +11,29 @@ package modelo;
 public class Insumo {
     private int codigoInsumo;
     private String nombre;
-    private String UnidadMedida;
+    private String unidadMedida;
     private double stockActual;
     private double stockMinimo;
     private double costo;
 
-    public Insumo(String nombre, String UnidadMedida, double stockActual, double stockMinimo, double costo) {
+    public Insumo(String nombre, String unidadMedida, double stockActual, double stockMinimo, double costo) {
         this.nombre = nombre;
-        this.UnidadMedida = UnidadMedida;
+        this.unidadMedida = unidadMedida;
+        this.stockActual = stockActual;
+        this.stockMinimo = stockMinimo;
+        this.costo = costo;
+    }
+     public Insumo(
+            int codigoInsumo,
+            String nombre,
+            String unidadMedida,
+            double stockActual,
+            double stockMinimo,
+            double costo) {
+
+        this.codigoInsumo = codigoInsumo;
+        this.nombre = nombre;
+        this.unidadMedida = unidadMedida;
         this.stockActual = stockActual;
         this.stockMinimo = stockMinimo;
         this.costo = costo;
@@ -41,11 +56,11 @@ public class Insumo {
     }
 
     public String getUnidadMedida() {
-        return UnidadMedida;
+        return unidadMedida;
     }
 
     public void setUnidadMedida(String UnidadMedida) {
-        this.UnidadMedida = UnidadMedida;
+        this.unidadMedida = UnidadMedida;
     }
 
     public double getStockActual() {

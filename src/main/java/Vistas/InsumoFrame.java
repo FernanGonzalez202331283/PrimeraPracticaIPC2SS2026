@@ -4,6 +4,13 @@
  */
 package Vistas;
 
+import ComunicacionesDAO.InsumoDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Insumo;
+
 /**
  *
  * @author fernan
@@ -15,6 +22,9 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
      */
     public InsumoFrame() {
         initComponents();
+        cargarTabla();
+        txtCodigoInsumo.setEditable(false);
+        verificarBajoSotck();
     }
 
     /**
@@ -26,21 +36,374 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtCodigoInsumo = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtUnidadMedia = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        txtStockActual = new javax.swing.JTextField();
+        txtStockMinimo = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtCosto = new javax.swing.JTextField();
+        btnRgistrar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblInsumos = new javax.swing.JTable();
+
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setText("Apartado de Insumos");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, -1, -1));
+
+        jLabel2.setText("Codigo de insumo: ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, -1, -1));
+        getContentPane().add(txtCodigoInsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, 270, 40));
+
+        jLabel3.setText("Nombre de Insumo: ");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 360, -1, -1));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, 270, 40));
+
+        jLabel4.setText("Unidad de mediad: ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 440, -1, -1));
+
+        txtUnidadMedia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtUnidadMediaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtUnidadMedia, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 430, 270, 40));
+
+        jLabel5.setText("Stock actual: ");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 520, -1, -1));
+
+        jLabel6.setText("Stock Minimo: ");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 590, -1, -1));
+        getContentPane().add(txtStockActual, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 510, 270, 40));
+        getContentPane().add(txtStockMinimo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 580, 270, 40));
+
+        jLabel7.setText("Costo de insumo: ");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 660, -1, -1));
+        getContentPane().add(txtCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 660, 270, 40));
+
+        btnRgistrar.setText("Rgistrar");
+        btnRgistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRgistrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRgistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 760, -1, -1));
+
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 760, -1, -1));
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 760, -1, -1));
+
+        tblInsumos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Codigo", "Nombre", "Unidad", "Stock Actual", "Stock Minimo", "Costo"
+            }
+        ));
+        tblInsumos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblInsumosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblInsumos);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 560, 150));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRgistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRgistrarActionPerformed
+        // TODO add your handling code here:
+        if(!validarDatos()){
+            return;
+        }
+        
+        
+        String nombre = txtNombre.getText().trim();
+        String unidad = txtUnidadMedia.getText().trim();
+        Double stockActual = Double.parseDouble(txtStockActual.getText().trim());
+        Double stockMinimo = Double.parseDouble(txtStockMinimo.getText().trim());
+        Double costo = Double.parseDouble(txtCosto.getText().trim());
+        
+        Insumo insumo= new Insumo(
+                nombre,
+                unidad,
+                stockActual,
+                stockMinimo,
+                costo
+        );
+        
+        InsumoDAO dao = new InsumoDAO();
+        
+        dao.insertarInsumo(insumo);
+        cargarTabla();
+        limpiarCampos();
+    }//GEN-LAST:event_btnRgistrarActionPerformed
+
+    private void txtUnidadMediaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUnidadMediaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtUnidadMediaActionPerformed
+
+    private void tblInsumosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblInsumosMouseClicked
+        // TODO add your handling code here:
+        int fila = tblInsumos.getSelectedRow();
+
+        if (fila >= 0) {
+
+            txtCodigoInsumo.setText(
+                    tblInsumos.getValueAt(fila, 0).toString()
+            );
+
+            txtNombre.setText(
+                    tblInsumos.getValueAt(fila, 1).toString()
+            );
+
+            txtUnidadMedia.setText(
+                    tblInsumos.getValueAt(fila, 2).toString()
+            );
+
+            txtStockActual.setText(
+                    tblInsumos.getValueAt(fila, 3).toString()
+            );
+
+            txtStockMinimo.setText(
+                    tblInsumos.getValueAt(fila, 4).toString()
+            );
+
+            txtCosto.setText(
+                    tblInsumos.getValueAt(fila, 5).toString()
+            );
+
+        }
+    }//GEN-LAST:event_tblInsumosMouseClicked
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+        if (txtCodigoInsumo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione un insumo de la tabla."
+            );
+            return;
+        }
+        if (!validarDatos()) {
+            return;
+        }
+        int codigo = Integer.parseInt(
+                txtCodigoInsumo.getText().trim()
+        );
+        String nombre =
+                txtNombre.getText().trim();
+        String unidad =
+                txtUnidadMedia.getText().trim();
+        double stockActual =
+                Double.parseDouble(
+                        txtStockActual.getText().trim()
+                );
+        double stockMinimo =
+                Double.parseDouble(
+                        txtStockMinimo.getText().trim()
+                );
+        double costo =
+                Double.parseDouble(
+                        txtCosto.getText().trim()
+                );
+        Insumo insumo = new Insumo(
+                codigo,
+                nombre,
+                unidad,
+                stockActual,
+                stockMinimo,
+                costo
+        );
+
+        InsumoDAO dao = new InsumoDAO();
+
+        dao.actualizarInsumo(insumo);
+
+        cargarTabla();
+
+        limpiarCampos();
+        
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        limpiarCampos();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnRgistrar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblInsumos;
+    private javax.swing.JTextField txtCodigoInsumo;
+    private javax.swing.JTextField txtCosto;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtStockActual;
+    private javax.swing.JTextField txtStockMinimo;
+    private javax.swing.JTextField txtUnidadMedia;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validarDatos() {
+        if (txtNombre.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese el nombre del insumo."
+            );
+            txtNombre.requestFocus();
+            return false;
+        }
+        if (txtUnidadMedia.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese la unidad de medida."
+            );
+            txtUnidadMedia.requestFocus();
+            return false;
+        }
+        if (txtStockActual.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese el stock actual."
+            );
+            txtStockActual.requestFocus();
+            return false;
+        }
+        if (txtStockMinimo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese el stock mínimo."
+            );
+            txtStockMinimo.requestFocus();
+            return false;
+        }
+        if (txtCosto.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese el costo."
+            );
+            txtCosto.requestFocus();
+            return false;
+        }
+        try {
+            double stockActual =
+                    Double.parseDouble(txtStockActual.getText());
+            double stockMinimo =
+                    Double.parseDouble(txtStockMinimo.getText());
+            double costo =
+                    Double.parseDouble(txtCosto.getText());
+            if (stockActual < 0 || stockMinimo < 0 || costo <= 0) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Los valores numéricos deben ser mayores que cero."
+                );
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Stock y costo deben ser valores numéricos."
+            );
+            return false;
+        }
+        return true;
+    }
+    
+    private void limpiarCampos() {
+        txtCodigoInsumo.setText("");
+        txtNombre.setText("");
+        txtUnidadMedia.setText("");
+        txtStockActual.setText("");
+        txtStockMinimo.setText("");
+        txtCosto.setText("");
+        txtNombre.requestFocus();
+    }
+    
+    private void cargarTabla() {
+        InsumoDAO dao = new InsumoDAO();
+        ResultSet resultado = dao.listarInsumos();
+        DefaultTableModel modelo =
+                (DefaultTableModel) tblInsumos.getModel();
+        modelo.setRowCount(0);
+        try {
+            while (resultado.next()) {
+                Object[] fila = {
+                    resultado.getInt("codigo_insumo"),
+                    resultado.getString("nombre"),
+                    resultado.getString("unidad_medida"),
+                    resultado.getDouble("stock_actual"),
+                    resultado.getDouble("stock_minimo"),
+                    resultado.getDouble("costo")
+                };
+                modelo.addRow(fila);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar los insumos."
+            );
+        }
+    }
+    
+    private void verificarBajoSotck(){
+        InsumoDAO dao = new InsumoDAO();
+        ResultSet resultado = dao.listarInsumos();
+        try {
+            while(resultado.next()){
+                String nombre = resultado.getString("nombre");
+                double stockActual = resultado.getDouble("stock_actual");
+                double stockMinimo = resultado.getDouble("stock_minimo");
+                    if(stockActual<= stockMinimo){
+                         JOptionPane.showMessageDialog(
+                            this,
+                            "El insumo " + nombre
+                            + " ha alcanzado o está por debajo "
+                            + "del stock mínimo.\n\n"
+                            + "Stock actual: " + stockActual
+                            + "\nStock mínimo: " + stockMinimo,
+                            "Alerta de inventario",
+                            JOptionPane.WARNING_MESSAGE
+                    );  
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

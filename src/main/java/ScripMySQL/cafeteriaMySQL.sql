@@ -100,8 +100,8 @@ CREATE TABLE receta(
     cantidad DECIMAL(10,2) NOT NULL,
 
     CONSTRAINT pk_receta PRIMARY KEY (id_receta),
-    CONSTRAINT fk_codigo_producto FOREIGN KEY(codigo_producto) REFERENCES producto(codigo_producto),
-    CONSTRAINT fk_codigo_insumo FOREIGN KEY(codigo_insumo) REFERENCES insumo(codigo_insumo)
+    CONSTRAINT fk_receta_producto FOREIGN KEY(codigo_producto) REFERENCES producto(codigo_producto),
+    CONSTRAINT fk_receta_insumo FOREIGN KEY(codigo_insumo) REFERENCES insumo(codigo_insumo)
 );
 
 --TABLA PAR MESA--
