@@ -4,6 +4,23 @@
  */
 package Vistas;
 
+import ComunicacionesDAO.ProductoDAO;
+import java.awt.Image;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Producto;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /**
  *
  * @author fernan
@@ -15,6 +32,10 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
      */
     public ProductoFrame() {
         initComponents();
+        
+        cargarCategorias();
+        txtCodigoProducto.setEditable(false);
+        cargarTabla();
     }
 
     /**
@@ -26,21 +47,454 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtCodigoProducto = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        cmbCategoria = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        txtPrecio = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        txtFotografia = new javax.swing.JTextField();
+        btnRegistrar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblProductos = new javax.swing.JTable();
+        btnSeleccionar = new javax.swing.JButton();
+        lblVistaImagen = new javax.swing.JLabel();
+
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel1.setText("Gestion de Productos");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 40, -1, -1));
+
+        jLabel2.setText("Codigo:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, -1, -1));
+        getContentPane().add(txtCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, 190, 40));
+
+        jLabel3.setText("Nombre:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, -1, -1));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, 190, 30));
+
+        jLabel4.setText("Categoria: ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, -1, -1));
+
+        cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, 190, -1));
+
+        jLabel5.setText("Precio: ");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, -1, -1));
+        getContentPane().add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 200, 30));
+
+        jLabel6.setText("fotografia: ");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 420, -1, -1));
+
+        txtFotografia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFotografiaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtFotografia, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 410, 200, 30));
+
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 480, -1, -1));
+
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, -1, -1));
+
+        tblProductos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Codigo", "Nombre", "Categoria", "Precio", "Fotografia"
+            }
+        ));
+        tblProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductosMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblProductos);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 530, 680, 190));
+
+        btnSeleccionar.setText("Seleccionar");
+        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSeleccionarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnSeleccionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 410, -1, -1));
+        getContentPane().add(lblVistaImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 120, 190, 160));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtFotografiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFotografiaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFotografiaActionPerformed
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        // TODO add your handling code here:
+        String nombre = txtNombre.getText().trim();
+        String categoria = cmbCategoria.getSelectedItem().toString();
+        String precioTexto = txtPrecio.getText().trim();
+        String fotografia = txtFotografia.getText().trim();
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese el nombre del producto."
+            );
+            return;
+        }
+        if (precioTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese el precio."
+            );
+            return;
+        }
+        double precio;
+        try {
+            precio =       Double.parseDouble(precioTexto);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El precio debe ser numérico."
+            );
+            return;
+        }
+        if (precio <= 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El precio debe ser mayor que cero."
+            );
+            return;
+        }
+        Producto producto =
+                new Producto(
+                        0,
+                        nombre,
+                        categoria,
+                        precio,
+                        fotografia
+                );
+        ProductoDAO dao =
+                new ProductoDAO();
+        boolean registrado =
+                dao.insertarProducto(producto);
+        if (registrado) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Producto registrado correctamente."
+            );
+            cargarTabla();
+            limpiarCampos();
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo registrar el producto."
+            );
+        }
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductosMouseClicked
+        // TODO add your handling code here:
+        int fila = tblProductos.getSelectedRow();
+
+        if (fila == -1) {
+            return;
+        }
+        txtCodigoProducto.setText(
+                tblProductos.getValueAt(fila, 0).toString()
+        );
+        txtNombre.setText(
+                tblProductos.getValueAt(fila, 1).toString()
+        );
+        cmbCategoria.setSelectedItem(
+                tblProductos.getValueAt(fila, 2).toString()
+        );
+        txtPrecio.setText(
+                tblProductos.getValueAt(fila, 3).toString()
+        );
+        Object fotografia =
+        tblProductos.getValueAt(fila, 4);
+
+        if (fotografia != null) {
+
+            txtFotografia.setText(
+                    fotografia.toString()
+            );
+
+            mostrarImagen(
+                    fotografia.toString()
+            );
+
+        } else {
+
+            txtFotografia.setText("");
+
+            mostrarImagen("");
+        }
+    }//GEN-LAST:event_tblProductosMouseClicked
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+        if (txtCodigoProducto.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione un producto de la tabla."
+            );
+            return;
+        }
+        String nombre = txtNombre.getText().trim();
+        String categoria = cmbCategoria.getSelectedItem().toString();
+        String precioTexto =txtPrecio.getText().trim();
+        String fotografia = txtFotografia.getText().trim();
+        if (nombre.isEmpty()) {
+            JOptionPane.showMessageDialog(this,"El nombre no puede estar vacío."
+            );
+            return;
+        }
+        if (precioTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese el precio."
+            );
+            return;
+        }
+        double precio;
+        try {
+            precio = Double.parseDouble(precioTexto);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this,"El precio debe ser numérico.");
+            return;
+        }
+        if (precio <= 0) {
+            JOptionPane.showMessageDialog(this,"El precio debe ser mayor que cero.");
+            return;
+        }
+        int codigo = Integer.parseInt(txtCodigoProducto.getText().trim());
+        Producto producto =
+                new Producto(
+                        codigo,
+                        nombre,
+                        categoria,
+                        precio,
+                        fotografia
+                );
+        ProductoDAO dao = new ProductoDAO();
+        boolean actualizado = dao.actualizarProducto(producto);
+        if (actualizado) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Producto actualizado correctamente."
+            );
+            cargarTabla();
+            limpiarCampos();
+        } else {
+            JOptionPane.showMessageDialog(this, "No se pudo actualizar el producto.");
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+        // TODO add your handling code here:
+        JFileChooser selector = new JFileChooser();
+
+        FileNameExtensionFilter filtro =
+                new FileNameExtensionFilter(
+                        "Imágenes JPG, JPEG y PNG",
+                        "jpg",
+                        "jpeg",
+                        "png"
+                );
+        selector.setFileFilter(filtro);
+        int resultado =
+                selector.showOpenDialog(this);
+        if (resultado != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        File archivoOriginal =
+                selector.getSelectedFile();
+        try {
+            Path carpetaImagenes =
+                    Paths.get(
+                            "src",
+                            "main",
+                            "resources",
+                            "imagenes"
+                    );
+            Files.createDirectories(carpetaImagenes);
+            String nombreArchivo =
+                    archivoOriginal.getName();
+            Path destino =
+                    carpetaImagenes.resolve(
+                            nombreArchivo
+                    );
+            Files.copy(
+                    archivoOriginal.toPath(),
+                    destino,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+            String rutaRelativa = "imagenes/" + nombreArchivo;
+            txtFotografia.setText(rutaRelativa
+            );
+            ImageIcon icono = new ImageIcon(archivoOriginal.getAbsolutePath());
+            Image imagen = icono.getImage();
+            Image imagenEscalada = imagen.getScaledInstance(
+                            lblVistaImagen.getWidth(),
+                            lblVistaImagen.getHeight(),
+                            Image.SCALE_SMOOTH
+                    );
+            lblVistaImagen.setIcon(
+                    new ImageIcon(imagenEscalada)
+            );
+
+            lblVistaImagen.setText("");
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Imagen seleccionada correctamente."
+            );
+
+        } catch (IOException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo copiar la imagen."
+            );
+
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnRegistrar;
+    private javax.swing.JButton btnSeleccionar;
+    private javax.swing.JComboBox<String> cmbCategoria;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblVistaImagen;
+    private javax.swing.JTable tblProductos;
+    private javax.swing.JTextField txtCodigoProducto;
+    private javax.swing.JTextField txtFotografia;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
+    
+    private void cargarCategorias() {
+        cmbCategoria.removeAllItems();
+        cmbCategoria.addItem("BEBIDA_CALIENTE");
+        cmbCategoria.addItem("BEBIDA_FRIA");
+        cmbCategoria.addItem("POSTRE");
+        cmbCategoria.addItem("COMIDA");
+    }
+    
+    private void cargarTabla() {
+
+        DefaultTableModel modelo =
+                (DefaultTableModel) tblProductos.getModel();
+
+        modelo.setRowCount(0);
+
+        ProductoDAO dao = new ProductoDAO();
+
+        ResultSet resultado =
+                dao.consultarProductos();
+
+        try {
+
+            while (resultado.next()) {
+
+                modelo.addRow(
+                        new Object[]{
+                            resultado.getInt("codigo_producto"),
+                            resultado.getString("nombre"),
+                            resultado.getString("categoria"),
+                            resultado.getDouble("precio"),
+                            resultado.getString("fotografia")
+                        }
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar los productos."
+            );
+        }
+    }
+    
+    private void limpiarCampos(){
+        txtCodigoProducto.setText("");
+        txtNombre.setText("");
+        txtPrecio.setText("");
+        txtFotografia.setText("");
+    }
+        private void mostrarImagen(String ruta) {
+
+        if (ruta == null || ruta.isEmpty()) {
+
+            lblVistaImagen.setIcon(null);
+            lblVistaImagen.setText("Sin imagen");
+
+            return;
+        }
+
+        File archivo =
+                new File(
+                        "src/main/resources/" + ruta
+                );
+
+        if (!archivo.exists()) {
+
+            lblVistaImagen.setIcon(null);
+            lblVistaImagen.setText("Imagen no encontrada");
+
+            return;
+        }
+
+        ImageIcon icono =
+                new ImageIcon(
+                        archivo.getAbsolutePath()
+                );
+
+        Image imagen =
+                icono.getImage();
+
+        Image imagenEscalada =
+                imagen.getScaledInstance(
+                        lblVistaImagen.getWidth(),
+                        lblVistaImagen.getHeight(),
+                        Image.SCALE_SMOOTH
+                );
+
+        lblVistaImagen.setIcon(
+                new ImageIcon(imagenEscalada)
+        );
+
+        lblVistaImagen.setText("");
+    }
 }

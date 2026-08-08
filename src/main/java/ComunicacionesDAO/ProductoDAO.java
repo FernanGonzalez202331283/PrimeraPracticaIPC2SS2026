@@ -30,188 +30,124 @@ public class ProductoDAO {
             """
             INSERT INTO producto
             (nombre, categoria, precio, fotografia)
-            VALUES(?,?,?,?)
+            VALUES (?, ?, ?, ?)
             """;
 
-    public static final String CONSULTAR_PRODUCTOS = 
+    public static final String CONSULTAR_PRODUCTO =
             """
             SELECT *
             FROM producto
             ORDER BY codigo_producto
             """;
 
-    public static final String ACTUALIZAR_PRODUCTO = 
+    public static final String ACTUALIZAR_PRODUCTO =
             """
             UPDATE producto
             SET nombre = ?,
-            categoria = ?,
-            precio = ?,
-            fotografia = ?
+                categoria = ?,
+                precio = ?,
+                fotografia = ?
             WHERE codigo_producto = ?
             """;
-    
-   public void registrarProducto(){
 
-    Scanner scanner = new Scanner(System.in);
+    public boolean insertarProducto(Producto producto) {
 
-    System.out.println("Ingrese nombre del producto:");
+        try {
 
-    String nombre = scanner.nextLine();
+            PreparedStatement statement =
+                    connection.prepareStatement(
+                            INSERTAR_PRODUCTO
+                    );
 
-    System.out.println("Ingrese categoría:");
-    System.out.println("BEBIDA_CALIENTE");
-    System.out.println("BEBIDA_FRIA");
-    System.out.println("POSTRE");
-    System.out.println("COMIDA");
+            statement.setString(
+                    1,
+                    producto.getNombre()
+            );
 
-    String categoria = scanner.nextLine();
+            statement.setString(
+                    2,
+                    producto.getCategoria()
+            );
 
-    System.out.println("Ingrese precio:");
+            statement.setDouble(
+                    3,
+                    producto.getPrecio()
+            );
 
-    double precio = scanner.nextDouble();
-    scanner.nextLine();
+            statement.setString(
+                    4,
+                    producto.getFotografia()
+            );
 
-    System.out.println("Ingrese ruta de la fotografía:");
+            int filas =
+                    statement.executeUpdate();
 
-    String fotografia = scanner.nextLine();
+            return filas > 0;
 
+        } catch (SQLException e) {
 
-    Producto producto = new Producto(
-            0,
-            nombre,
-            categoria,
-            precio,
-            fotografia
-    );
+            e.printStackTrace();
 
-
-    try{
-
-        PreparedStatement statement =
-                connection.prepareStatement(INSERTAR_PRODUCTO);
-
-        statement.setString(1, producto.getNombre());
-        statement.setString(2, producto.getCategoria());
-        statement.setDouble(3, producto.getPrecio());
-        statement.setString(4, producto.getFotografia());
-
-        int filas = statement.executeUpdate();
-
-        if(filas > 0){
-
-            System.out.println("Producto registrado correctamente.");
-
+            return false;
         }
-
-    }catch(SQLException e){
-
-        e.printStackTrace();
-
     }
 
-}
-   public void listarProductos(){
+    public ResultSet consultarProductos() {
+        try {
+            PreparedStatement statement
+                    = connection.prepareStatement(CONSULTAR_PRODUCTO);
+            return statement.executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();
 
-    try{
-
-        PreparedStatement statement =
-                connection.prepareStatement(CONSULTAR_PRODUCTOS);
-
-        ResultSet resultado = statement.executeQuery();
-
-        while(resultado.next()){
-
-            System.out.println("--------------------------------");
-
-            System.out.println(
-                    "Código: "
-                    + resultado.getInt("codigo_producto")
-            );
-
-            System.out.println(
-                    "Nombre: "
-                    + resultado.getString("nombre")
-            );
-
-            System.out.println(
-                    "Categoría: "
-                    + resultado.getString("categoria")
-            );
-
-            System.out.println(
-                    "Precio: Q"
-                    + resultado.getDouble("precio")
-            );
-
-            System.out.println(
-                    "Fotografía: "
-                    + resultado.getString("fotografia")
-            );
-
+            return null;
         }
-
-    }catch(SQLException e){
-
-        e.printStackTrace();
-
     }
 
-}
-   public void actualizarProducto(){
+    public boolean actualizarProducto(Producto producto) {
 
-    Scanner scanner = new Scanner(System.in);
+        try {
 
-    System.out.println("Ingrese el código del producto:");
+            PreparedStatement statement =
+                    connection.prepareStatement(
+                            ACTUALIZAR_PRODUCTO
+                    );
 
-    int codigo = scanner.nextInt();
-    scanner.nextLine();
+            statement.setString(
+                    1,
+                    producto.getNombre()
+            );
 
-    System.out.println("Nuevo nombre:");
+            statement.setString(
+                    2,
+                    producto.getCategoria()
+            );
 
-    String nombre = scanner.nextLine();
+            statement.setDouble(
+                    3,
+                    producto.getPrecio()
+            );
 
-    System.out.println("Nueva categoría:");
+            statement.setString(
+                    4,
+                    producto.getFotografia()
+            );
 
-    String categoria = scanner.nextLine();
+            statement.setInt(
+                    5,
+                    producto.getCodigoProducto()
+            );
 
-    System.out.println("Nuevo precio:");
+            int filas =
+                    statement.executeUpdate();
 
-    double precio = scanner.nextDouble();
-    scanner.nextLine();
+            return filas > 0;
 
-    System.out.println("Nueva fotografía:");
+        } catch (SQLException e) {
 
-    String fotografia = scanner.nextLine();
+            e.printStackTrace();
 
-    try{
-
-        PreparedStatement statement =
-                connection.prepareStatement(ACTUALIZAR_PRODUCTO);
-
-        statement.setString(1, nombre);
-        statement.setString(2, categoria);
-        statement.setDouble(3, precio);
-        statement.setString(4, fotografia);
-        statement.setInt(5, codigo);
-
-        int filas = statement.executeUpdate();
-
-        if(filas > 0){
-
-            System.out.println("Producto actualizado correctamente.");
-
-        }else{
-
-            System.out.println("No existe un producto con ese código.");
-
+            return false;
         }
-
-    }catch(SQLException e){
-
-        e.printStackTrace();
-
     }
-
 }
-}
-

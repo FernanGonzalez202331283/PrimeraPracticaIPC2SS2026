@@ -4,6 +4,12 @@
  */
 package Vistas;
 
+import ComunicacionesDAO.InsumoDAO;
+import ComunicacionesDAO.ProductoDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author fernan
@@ -15,6 +21,8 @@ public class RecetaFrame extends javax.swing.JInternalFrame {
      */
     public RecetaFrame() {
         initComponents();
+        cargarInsumos();
+        cargarProductos();
     }
 
     /**
@@ -26,21 +34,144 @@ public class RecetaFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        cmbProducto = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        cmbInsumo = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
+        btnAgregar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblReceta = new javax.swing.JTable();
+
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel1.setText("GESTION DE RECETAS");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 41, -1, -1));
+
+        jLabel2.setText("Producto: ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, -1, -1));
+
+        cmbProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cmbProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, 110, -1));
+
+        jLabel3.setText("Insumo: ");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, -1, -1));
+
+        cmbInsumo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cmbInsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 110, -1));
+
+        jLabel4.setText("Cantidad: ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 310, -1, -1));
+        getContentPane().add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 300, -1, -1));
+
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 370, -1, -1));
+
+        btnEliminar.setText("Eliminar");
+        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 370, -1, -1));
+
+        tblReceta.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblReceta);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 460, 590, 150));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JComboBox<String> cmbInsumo;
+    private javax.swing.JComboBox<String> cmbProducto;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblReceta;
+    private javax.swing.JTextField txtCantidad;
     // End of variables declaration//GEN-END:variables
+    private void cargarProductos() {
+
+    ProductoDAO dao = new ProductoDAO();
+
+    try {
+
+        ResultSet resultado = dao.consultarProductos();
+
+        cmbProducto.removeAllItems();
+
+        while (resultado.next()) {
+
+            cmbProducto.addItem(
+                resultado.getInt("codigo_producto")
+                + " - "
+                + resultado.getString("nombre")
+            );
+        }
+
+    } catch (SQLException e) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Error al cargar productos."
+        );
+
+        e.printStackTrace();
+    }
+}
+    
+    private void cargarInsumos() {
+
+    InsumoDAO dao = new InsumoDAO();
+
+    try {
+
+        ResultSet resultado = dao.consultarInsumos();
+
+        cmbInsumo.removeAllItems();
+
+        while (resultado.next()) {
+
+            cmbInsumo.addItem(
+                resultado.getInt("codigo_insumo")
+                + " - "
+                + resultado.getString("nombre")
+            );
+        }
+
+    } catch (SQLException e) {
+
+        JOptionPane.showMessageDialog(
+            this,
+            "Error al cargar insumos."
+        );
+
+        e.printStackTrace();
+    }
+}
 }
