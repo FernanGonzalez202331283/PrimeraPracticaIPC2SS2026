@@ -148,3 +148,145 @@ CREATE TABLE detalle_cuenta(
     CONSTRAINT fk_id_cuenta FOREIGN KEY (id_cuenta) REFERENCES cuenta(id_cuenta),
     CONSTRAINT fk_codigo_producto FOREIGN KEY(codigo_producto) REFERENCES producto(codigo_producto)
 );
+
+INSERT INTO empleado
+(dpi, nombre, rol, jornada, salario, fecha_contratacion, estado)
+VALUES
+('1234567890101', 'Carlos López', 'MESERO', 'MATUTINA', 3500.00, '2026-08-01', TRUE),
+('1234567890102', 'María García', 'MESERO', 'VESPERTINA', 3500.00, '2026-08-01', TRUE),
+('1234567890103', 'José Martínez', 'BARISTA', 'MATUTINA', 4200.00, '2026-08-01', TRUE),
+('1234567890104', 'Ana Pérez', 'COCINA', 'VESPERTINA', 4000.00, '2026-08-01', TRUE);
+
+INSERT INTO insumo
+(nombre, unidad_medida, stock_actual, stock_minimo, costo)
+VALUES
+('Café en grano', 'LIBRA', 20.00, 5.00, 65.00),
+('Leche entera', 'LITRO', 25.00, 8.00, 12.00),
+('Azúcar', 'LIBRA', 15.00, 5.00, 6.00),
+('Chocolate en polvo', 'LIBRA', 10.00, 3.00, 28.00),
+('Hielo', 'LIBRA', 20.00, 8.00, 3.00),
+('Harina', 'LIBRA', 20.00, 5.00, 5.50),
+('Huevos', 'UNIDAD', 50.00, 15.00, 1.25),
+('Pan artesanal', 'UNIDAD', 30.00, 10.00, 4.50);
+
+INSERT INTO compra_insumo
+(fecha, total)
+VALUES
+('2026-08-01', 650.00),
+('2026-08-10', 350.00);
+
+INSERT INTO detalle_compra
+(id_compra, codigo_insumo, cantidad, precio_unitario, subtotal)
+VALUES
+(1, 1, 5.00, 65.00, 325.00),
+(1, 2, 20.00, 12.00, 240.00),
+(1, 3, 10.00, 6.00, 60.00),
+(2, 4, 5.00, 28.00, 140.00);
+
+INSERT INTO producto
+(nombre, categoria, precio, fotografia)
+VALUES
+(
+    'Café Americano',
+    'BEBIDA_CALIENTE',
+    18.00,
+    'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=1000&auto=format&fit=crop'
+),
+(
+    'Café Latte',
+    'BEBIDA_CALIENTE',
+    25.00,
+    'https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?q=80&w=1000&auto=format&fit=crop'
+),
+(
+    'Cappuccino',
+    'BEBIDA_CALIENTE',
+    27.00,
+    'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=1000&auto=format&fit=crop'
+),
+(
+    'Chocolate Caliente',
+    'BEBIDA_CALIENTE',
+    25.00,
+    'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?q=80&w=1000&auto=format&fit=crop'
+),
+(
+    'Iced Coffee',
+    'BEBIDA_FRIA',
+    28.00,
+    'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=1000&auto=format&fit=crop'
+),
+(
+    'Sándwich de Jamón y Queso',
+    'COMIDA',
+    38.00,
+    'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?q=80&w=1000&auto=format&fit=crop'
+);
+
+INSERT INTO receta
+(codigo_producto, codigo_insumo, cantidad)
+VALUES
+(1, 1, 0.05),
+(1, 3, 0.01);
+
+INSERT INTO receta
+(codigo_producto, codigo_insumo, cantidad)
+VALUES
+(2, 1, 0.05),
+(2, 2, 0.20),
+(2, 3, 0.01);
+
+INSERT INTO receta
+(codigo_producto, codigo_insumo, cantidad)
+VALUES
+(3, 1, 0.05),
+(3, 2, 0.15),
+(3, 3, 0.01);
+
+INSERT INTO receta
+(codigo_producto, codigo_insumo, cantidad)
+VALUES
+(4, 2, 0.25),
+(4, 4, 0.04),
+(4, 3, 0.01);
+
+INSERT INTO receta
+(codigo_producto, codigo_insumo, cantidad)
+VALUES
+(5, 1, 0.05),
+(5, 2, 0.10),
+(5, 5, 0.15),
+(5, 3, 0.01);
+
+INSERT INTO mesa
+(numero_mesa, capacidad, estado)
+VALUES
+(1, 2, 'LIBRE'),
+(2, 4, 'LIBRE'),
+(3, 4, 'OCUPADA'),
+(4, 6, 'LIBRE');
+
+INSERT INTO cuenta
+(numero_mesa, dpi_mesero, fecha, hora_ocupacion,
+ hora_liberacion, estado, propina, total)
+VALUES
+(3, '1234567890101', '2026-08-13', '10:00:00',
+ NULL, 'ABIERTA', 0.00, 52.00),
+
+(1, '1234567890102', '2026-08-12', '09:00:00',
+ '10:00:00', 'PAGADA', 5.00, 48.00),
+
+(2, '1234567890102', '2026-08-12', '11:30:00',
+ '12:30:00', 'PAGADA', 8.00, 73.00);
+
+INSERT INTO detalle_cuenta
+(id_cuenta, codigo_producto, cantidad, precio, subtotal)
+VALUES
+(1, 2, 1, 25.00, 25.00),
+(1, 3, 1, 27.00, 27.00);
+
+INSERT INTO detalle_cuenta
+(id_cuenta, codigo_producto, cantidad, precio, subtotal)
+VALUES
+(2, 1, 1, 18.00, 18.00),
+(2, 2, 1, 25.00, 25.00);
