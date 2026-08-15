@@ -11,6 +11,14 @@ package Vistas;
 public class FrmVentaPrincipal extends javax.swing.JFrame {
 
     private MesaFrame mesaFrame;
+    private EmpleadoFrame empleadoFrame;
+    private NominaFrame nominaFrame;
+    private InsumoFrame insumoFrame;
+    private CompraInsumoFrame compraInsumoFrame;
+    private ProductoFrame productoFrame;
+    private RecetaFrame recetaFrame;
+    private CuentaFrame cuentaFrame;
+    private ReporteFrame reporteFrame;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmVentaPrincipal.class.getName());
 
     /**
@@ -18,6 +26,7 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
      */
     public FrmVentaPrincipal() {
         initComponents();
+        
     }
 
     /**
@@ -209,45 +218,120 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_empleadoActionPerformed
 
     private void menuEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEmpleadoActionPerformed
-        EmpleadoFrame empleado = new EmpleadoFrame();
+         if (empleadoFrame == null || empleadoFrame.isClosed()) {
 
-        desktopPane.add(empleado);
+            empleadoFrame = new EmpleadoFrame();
 
-        empleado.setVisible(true);
+            desktopPane.add(empleadoFrame);
+
+            empleadoFrame.setVisible(true);
+
+        } else {
+
+            try {
+                empleadoFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuEmpleadoActionPerformed
 
     private void menuNominaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNominaActionPerformed
-        NominaFrame nomina = new NominaFrame();
-        desktopPane.add(nomina);
-        nomina.setVisible(true);
+       if (nominaFrame == null || nominaFrame.isClosed()) {
+
+            nominaFrame = new NominaFrame();
+
+            desktopPane.add(nominaFrame);
+
+            nominaFrame.setVisible(true);
+
+        } else {
+
+            try {
+                nominaFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuNominaActionPerformed
 
     private void menuInsumoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuInsumoActionPerformed
         // TODO add your handling code here:
-        InsumoFrame insumo = new InsumoFrame();
-        desktopPane.add(insumo);
-        insumo.setVisible(true);
+        if (insumoFrame == null || insumoFrame.isClosed()) {
+
+            insumoFrame = new InsumoFrame();
+
+            desktopPane.add(insumoFrame);
+
+            insumoFrame.setVisible(true);
+
+        } else {
+
+            try {
+                insumoFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuInsumoActionPerformed
 
     private void menuCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCompraActionPerformed
         // TODO add your handling code here:
-        CompraInsumoFrame compraInsumo = new CompraInsumoFrame();
-        desktopPane.add(compraInsumo);
-        compraInsumo.setVisible(true);
+       if (compraInsumoFrame == null || compraInsumoFrame.isClosed()) {
+
+            compraInsumoFrame = new CompraInsumoFrame();
+
+            desktopPane.add(compraInsumoFrame);
+
+            compraInsumoFrame.setVisible(true);
+
+        } else {
+
+            try {
+                compraInsumoFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuCompraActionPerformed
 
     private void menuProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductoActionPerformed
         // TODO add your handling code here:
-        ProductoFrame producto = new ProductoFrame();
-        desktopPane.add(producto);
-        producto.setVisible(true);
+       if (productoFrame == null || productoFrame.isClosed()) {
+
+            productoFrame = new ProductoFrame();
+
+            desktopPane.add(productoFrame);
+
+            productoFrame.setVisible(true);
+
+        } else {
+
+            try {
+                productoFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuProductoActionPerformed
 
     private void menuRecetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuRecetaActionPerformed
         // TODO add your handling code here:
-        RecetaFrame receta = new RecetaFrame();
-        desktopPane.add(receta);
-        receta.setVisible(true);
+        if (recetaFrame == null || recetaFrame.isClosed()) {
+            recetaFrame = new RecetaFrame();
+
+            desktopPane.add(recetaFrame);
+
+            recetaFrame.setVisible(true);
+
+        } else {
+
+            try {
+                recetaFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuRecetaActionPerformed
 
     private void menuMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMesaActionPerformed
@@ -286,26 +370,62 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
 
     private void menuFlujoCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFlujoCajaActionPerformed
         // TODO add your handling code here:
-        ReporteFrame reporte = new ReporteFrame();
-        //metodo para los reportes
-        desktopPane.add(reporte);
-        reporte.setVisible(true);
+        if (reporteFrame == null || reporteFrame.isClosed()) {
+
+            reporteFrame = new ReporteFrame();
+
+            desktopPane.add(reporteFrame);
+
+            reporteFrame.setVisible(true);
+
+        } else {
+
+            try {
+                reporteFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuFlujoCajaActionPerformed
 
     private void menuProductosVendidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductosVendidosActionPerformed
         // TODO add your handling code here:
-        ReporteFrame reporte = new ReporteFrame();
-        //metodo para los reportes
-        desktopPane.add(reporte);
-        reporte.setVisible(true);
+       if (reporteFrame == null || reporteFrame.isClosed()) {
+
+            reporteFrame = new ReporteFrame();
+
+            desktopPane.add(reporteFrame);
+
+            reporteFrame.setVisible(true);
+
+        } else {
+
+            try {
+                reporteFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuProductosVendidosActionPerformed
 
     private void menuStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuStockActionPerformed
         // TODO add your handling code here:
-        ReporteFrame reporte = new ReporteFrame();
-        //metodo para los reportes
-        desktopPane.add(reporte);
-        reporte.setVisible(true);
+        if (reporteFrame == null || reporteFrame.isClosed()) {
+
+            reporteFrame = new ReporteFrame();
+
+            desktopPane.add(reporteFrame);
+
+            reporteFrame.setVisible(true);
+
+        } else {
+
+            try {
+                reporteFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuStockActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

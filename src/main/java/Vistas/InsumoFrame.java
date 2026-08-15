@@ -22,6 +22,7 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
      */
     public InsumoFrame() {
         initComponents();
+        setClosable(true);
         cargarTabla();
         txtCodigoInsumo.setEditable(false);
         verificarBajoSotck();

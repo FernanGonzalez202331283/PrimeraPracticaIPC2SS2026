@@ -22,6 +22,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
      */
     public EmpleadoFrame() {
         initComponents();
+        setClosable(true);
         cargarRol();
         cargarJornada();
         cargarTabla();

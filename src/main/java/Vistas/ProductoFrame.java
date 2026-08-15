@@ -32,6 +32,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
      */
     public ProductoFrame() {
         initComponents();
+        setClosable(true);
 
         cargarCategorias();
         txtCodigoProducto.setEditable(false);

@@ -35,6 +35,7 @@ public class CuentaFrame extends javax.swing.JInternalFrame {
     public CuentaFrame() {
 
         initComponents();
+        setClosable(true);
         txtTotal.setEditable(false);
         cargarProductos();
         cargarMesas();

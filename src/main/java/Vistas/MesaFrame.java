@@ -22,6 +22,7 @@ public class MesaFrame extends javax.swing.JInternalFrame {
      */
     public MesaFrame() {
         initComponents();
+        setClosable(true);
         cargarTabla();
         cargarPanelMesas();
     }

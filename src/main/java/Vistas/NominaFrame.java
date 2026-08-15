@@ -21,6 +21,7 @@ public class NominaFrame extends javax.swing.JInternalFrame {
      */
     public NominaFrame() {
         initComponents();
+        setClosable(true);
         cargarCombos();
         NominaDAO dao = new NominaDAO();
 

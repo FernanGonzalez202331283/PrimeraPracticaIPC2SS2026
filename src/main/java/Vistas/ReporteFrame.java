@@ -29,6 +29,7 @@ public class ReporteFrame extends javax.swing.JInternalFrame {
      */
     public ReporteFrame() {
         initComponents();
+        setClosable(true);
         reporteDAO = new ReporteDAO();
         cmbTipoReporte.removeAllItems();
 
@@ -365,156 +366,268 @@ public class ReporteFrame extends javax.swing.JInternalFrame {
 
     private void exportarReporteHTML() {
 
-        if (tblReporte.getColumnCount() == 0 || tblReporte.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Primero debe generar un reporte."
-            );
-            return;
-        }
-        JFileChooser selector = new JFileChooser();
+            if (tblReporte.getColumnCount() == 0
+                    || tblReporte.getRowCount() == 0) {
 
-        selector.setDialogTitle("Guardar reporte HTML");
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Primero debe generar un reporte."
+                );
 
-        selector.setSelectedFile( new File("reporte.html"));
+                return;
+            }
 
-        int opcion = selector.showSaveDialog(this);
+            JFileChooser selector = new JFileChooser();
 
-        if (opcion != JFileChooser.APPROVE_OPTION) {
-            return;
-        }
+            selector.setDialogTitle("Guardar reporte HTML");
 
-        File archivo = selector.getSelectedFile();
-
-        if (!archivo.getName().toLowerCase().endsWith(".html")) {
-
-            archivo = new File(
-                    archivo.getAbsolutePath() + ".html"
-            );
-        }
-
-        try {
-
-            FileWriter escritor
-                    = new FileWriter(archivo);
-
-            escritor.write("""
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <meta charset="UTF-8">
-                    <title>Reporte Cafetería</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            margin: 40px;
-                        }
-
-                        h1 {
-                            text-align: center;
-                        }
-
-                        table {
-                            width: 100%;
-                            border-collapse: collapse;
-                            margin-top: 25px;
-                        }
-
-                        th, td {
-                            border: 1px solid black;
-                            padding: 8px;
-                            text-align: center;
-                        }
-
-                        th {
-                            font-weight: bold;
-                        }
-                    </style>
-                </head>
-                <body>
-                """);
-
-            escritor.write(
-                    "<h1>Reporte de Cafetería</h1>"
+            selector.setSelectedFile(
+                    new File("reporte.html")
             );
 
-            escritor.write("<table>");
+            int opcion = selector.showSaveDialog(this);
 
-            TableModel modelo = tblReporte.getModel();
+            if (opcion != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
 
-            // Encabezados
-            escritor.write("<tr>");
+            File archivo = selector.getSelectedFile();
 
-            for (int columna = 0;
-                    columna < modelo.getColumnCount();
-                    columna++) {
+            if (!archivo.getName().toLowerCase().endsWith(".html")) {
 
-                escritor.write(
-                        "<th>"
-                        + escaparHTML(
-                                modelo.getColumnName(columna)
-                        )
-                        + "</th>"
+                archivo = new File(
+                        archivo.getAbsolutePath() + ".html"
                 );
             }
 
-            escritor.write("</tr>");
+            try {
 
-            // Datos
-            for (int fila = 0;
-                    fila < modelo.getRowCount();
-                    fila++) {
+                FileWriter escritor = new FileWriter(archivo);
+                escritor.write("""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
 
+                        <meta charset="UTF-8">
+
+                        <title>Reporte - JavaBeans Café</title>
+
+                        <style>
+
+                            * {
+                                box-sizing: border-box;
+                            }
+
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f4f1ed;
+                                margin: 0;
+                                padding: 40px;
+                                color: #333333;
+                            }
+
+                            .contenedor {
+                                max-width: 1100px;
+                                margin: auto;
+                                background-color: white;
+                                padding: 35px;
+                                border-radius: 12px;
+                                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+                            }
+
+                            .encabezado {
+                                text-align: center;
+                                margin-bottom: 25px;
+                            }
+
+                            .encabezado h1 {
+                                margin: 0;
+                                font-size: 34px;
+                                color: #5c4033;
+                            }
+
+                            .encabezado h2 {
+                                margin-top: 8px;
+                                font-size: 21px;
+                                font-weight: normal;
+                                color: #555555;
+                            }
+
+                            .informacion {
+                                text-align: center;
+                                margin-bottom: 25px;
+                                font-size: 14px;
+                                color: #777777;
+                            }
+
+                            .tabla-contenedor {
+                                overflow-x: auto;
+                            }
+
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin-top: 10px;
+                            }
+
+                            th {
+                                padding: 12px;
+                                text-align: center;
+                                font-weight: bold;
+                                background-color: #5c4033;
+                                color: white;
+                            }
+
+                            td {
+                                padding: 10px;
+                                text-align: center;
+                                border-bottom: 1px solid #dddddd;
+                            }
+
+                            tr:nth-child(even) {
+                                background-color: #f7f7f7;
+                            }
+
+                            tr:hover {
+                                background-color: #eeeeee;
+                            }
+
+                            .pie {
+                                margin-top: 25px;
+                                text-align: right;
+                                font-size: 14px;
+                                color: #666666;
+                            }
+
+                            .botones {
+                                text-align: center;
+                                margin-top: 30px;
+                            }
+
+                            .boton {
+                                background-color: #5c4033;
+                                color: white;
+                                border: none;
+                                padding: 10px 20px;
+                                border-radius: 6px;
+                                cursor: pointer;
+                                font-size: 14px;
+                            }
+
+                            .boton:hover {
+                                background-color: #3f2b22;
+                            }
+
+                            @media print {
+
+                                body {
+                                    background-color: white;
+                                    padding: 0;
+                                }
+
+                                .contenedor {
+                                    box-shadow: none;
+                                    max-width: none;
+                                }
+
+                                .botones {
+                                    display: none;
+                                }
+                            }
+
+                        </style>
+
+                    </head>
+
+                    <body>
+
+                        <div class="contenedor">
+
+                            <div class="encabezado">
+                                <h1>JavaBeans Café</h1>
+                                <h2>Reporte de Cafetería</h2>
+                            </div>
+
+                            <div class="informacion">
+                                Reporte generado desde el sistema de gestión
+                            </div>
+
+                            <div class="tabla-contenedor">
+
+                    """);
+
+                TableModel modelo = tblReporte.getModel();
+                escritor.write("<table>");
                 escritor.write("<tr>");
 
                 for (int columna = 0;
                         columna < modelo.getColumnCount();
                         columna++) {
 
-                    Object valor
-                            = modelo.getValueAt(
-                                    fila,
-                                    columna
-                            );
-
                     escritor.write(
-                            "<td>"
+                            "<th>"
                             + escaparHTML(
-                                    valor == null
-                                            ? ""
-                                            : valor.toString()
+                                    modelo.getColumnName(columna)
                             )
-                            + "</td>"
+                            + "</th>"
                     );
                 }
 
                 escritor.write("</tr>");
+                for (int fila = 0;
+                        fila < modelo.getRowCount();
+                        fila++) {
+
+                    escritor.write("<tr>");
+
+                    for (int columna = 0;
+                            columna < modelo.getColumnCount();
+                            columna++) {
+
+                        Object valor = modelo.getValueAt(
+                                fila,
+                                columna
+                        );
+
+                        escritor.write(
+                                "<td>"
+                                + escaparHTML(
+                                        valor == null
+                                                ? ""
+                                                : valor.toString()
+                                )
+                                + "</td>"
+                        );
+                    }
+
+                    escritor.write("</tr>");
+                }
+                escritor.write("</table>");
+
+                escritor.write(
+                        "<div class=\"pie\">"
+                        + "Total de registros: "
+                        + modelo.getRowCount()
+                        + "</div>"
+                );
+                escritor.close();
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Reporte exportado correctamente."
+                );
+
+            } catch (IOException e) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Error al exportar el reporte."
+                );
+
+                e.printStackTrace();
             }
-
-            escritor.write("""
-                </table>
-                </body>
-                </html>
-                """);
-
-            escritor.close();
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Reporte exportado correctamente."
-            );
-
-        } catch (IOException e) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Error al exportar el reporte."
-            );
-
-            e.printStackTrace();
-        }
     }
-
+    
     private String escaparHTML(String texto) {
 
         return texto

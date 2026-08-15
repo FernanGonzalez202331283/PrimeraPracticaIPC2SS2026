@@ -24,7 +24,7 @@ public class RecetaFrame extends javax.swing.JInternalFrame {
      */
     public RecetaFrame() {
         initComponents();
-
+        setClosable(true);
         tblReceta.getColumnModel().getColumn(0).setMinWidth(0);
         tblReceta.getColumnModel().getColumn(0).setMaxWidth(0);
         tblReceta.getColumnModel().getColumn(0).setWidth(0);
