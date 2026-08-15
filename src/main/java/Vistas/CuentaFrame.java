@@ -44,7 +44,7 @@ public class CuentaFrame extends javax.swing.JInternalFrame {
 
     public CuentaFrame(MesaFrame mesaFrame) {
         initComponents();
-
+        setClosable(true);
         this.mesaFrame = mesaFrame;
         cargarProductos();
         cargarMesas();
