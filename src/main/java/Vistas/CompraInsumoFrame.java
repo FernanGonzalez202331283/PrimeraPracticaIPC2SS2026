@@ -26,6 +26,8 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
         txtTotal.setEditable(false);
         txtPrecio.setEditable(false);
         txtFecha.setEditable(false);
+        setClosable(true);
+        setResizable(true);
 
         txtFecha.setText(LocalDate.now().toString());
         DefaultTableModel modelo = (DefaultTableModel) tblDetalleCompra.getModel();
