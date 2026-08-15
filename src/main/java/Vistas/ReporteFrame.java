@@ -4,17 +4,37 @@
  */
 package Vistas;
 
+import ComunicacionesDAO.ReporteDAO;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author fernan
  */
 public class ReporteFrame extends javax.swing.JInternalFrame {
 
+    private ReporteDAO reporteDAO;
+
     /**
      * Creates new form ReporteFrame
      */
     public ReporteFrame() {
         initComponents();
+        reporteDAO = new ReporteDAO();
+        cmbTipoReporte.removeAllItems();
+
+        cmbTipoReporte.addItem("FLUJO DE CAJA");
+        cmbTipoReporte.addItem("PRODUCTOS MAS VENDIDOS");
+        cmbTipoReporte.addItem("INSUMO CON BAJO STOCK");
     }
 
     /**
@@ -26,21 +46,482 @@ public class ReporteFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtFechaInicial = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txtFechaFinal = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        cmbTipoReporte = new javax.swing.JComboBox<>();
+        btnGenerar = new javax.swing.JButton();
+        btnExportar = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblReporte = new javax.swing.JTable();
+        jLabel5 = new javax.swing.JLabel();
+
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("REPORTES");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 190, 46));
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Fecha inicial :");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, -1, -1));
+        getContentPane().add(txtFechaInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 150, 140, 30));
+
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("Fecha Final: ");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, -1, -1));
+
+        txtFechaFinal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFechaFinalActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtFechaFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 150, 150, 30));
+
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Tipo de Reporte: ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, -1, -1));
+
+        cmbTipoReporte.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cmbTipoReporte, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 230, 160, 30));
+
+        btnGenerar.setText("Generar Reporte");
+        btnGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnGenerar, new org.netbeans.lib.awtextra.AbsoluteConstraints(119, 320, 160, 40));
+
+        btnExportar.setText("Exportar Reporte");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnExportar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 320, -1, 40));
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 320, 100, 40));
+
+        tblReporte.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title", "Title", "", "Title "
+            }
+        ));
+        jScrollPane1.setViewportView(tblReporte);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 400, 610, 250));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.png"))); // NOI18N
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 780, 730));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        txtFechaInicial.setText("");
+        txtFechaFinal.setText("");
+
+        cmbTipoReporte.setSelectedIndex(0);
+
+        limpiarTabla();
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarActionPerformed
+        // TODO add your handling code here:
+        String reporte = cmbTipoReporte.getSelectedItem().toString();
+        switch (reporte) {
+            case "FLUJO DE CAJA":
+                generarFlujoCaja();
+                break;
+            case "PRODUCTOS MAS VENDIDOS":
+                generarProductosMasVendidos();
+                break;
+            case "INSUMO CON BAJO STOCK":
+                generarInsumosBajoStock();
+                break;
+        }
+    }//GEN-LAST:event_btnGenerarActionPerformed
+
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
+        // TODO add your handling code here:
+        exportarReporteHTML();
+    }//GEN-LAST:event_btnExportarActionPerformed
+
+    private void txtFechaFinalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaFinalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaFinalActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExportar;
+    private javax.swing.JButton btnGenerar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JComboBox<String> cmbTipoReporte;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblReporte;
+    private javax.swing.JTextField txtFechaFinal;
+    private javax.swing.JTextField txtFechaInicial;
     // End of variables declaration//GEN-END:variables
+
+    private void limpiarTabla() {
+
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tblReporte.getModel();
+
+        modelo.setRowCount(0);
+        modelo.setColumnCount(0);
+    }
+
+    private void generarFlujoCaja() {
+        String fechaInicialTexto = txtFechaInicial.getText().trim();
+        String fechaFinalTexto = txtFechaFinal.getText().trim();
+        if (fechaInicialTexto.isEmpty()|| fechaFinalTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Debe ingresar ambas fechas."
+            );
+            return;
+        }
+        try {
+            Date fechaInicial = Date.valueOf(fechaInicialTexto);
+
+            Date fechaFinal = Date.valueOf(fechaFinalTexto);
+
+            ResultSet resultado = reporteDAO.reporteFlujoCaja(fechaInicial,fechaFinal);
+            DefaultTableModel modelo = new DefaultTableModel();
+
+            modelo.addColumn("Ingresos");
+            modelo.addColumn("Compras");
+            modelo.addColumn("Nóminas");
+            modelo.addColumn("Total Egresos");
+            modelo.addColumn("Flujo Neto");
+            if (resultado.next()) {
+                double ingresos = resultado.getDouble("ingresos");
+
+                double egresosCompras = resultado.getDouble("egresos_compras");
+
+                double egresosNominas = resultado.getDouble("egresos_nominas");
+
+                double totalEgresos = egresosCompras + egresosNominas;
+
+                double flujoNeto = ingresos - totalEgresos;
+
+                modelo.addRow(new Object[]{
+                    ingresos,
+                    egresosCompras,
+                    egresosNominas,
+                    totalEgresos,
+                    flujoNeto
+                });
+            }
+
+            tblReporte.setModel(modelo);
+
+        } catch (IllegalArgumentException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Las fechas deben tener el formato AAAA-MM-DD."
+            );
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al generar el reporte."
+            );
+
+            e.printStackTrace();
+        }
+    }
+
+    private void generarProductosMasVendidos() {
+
+        String fechaInicialTexto = txtFechaInicial.getText().trim();
+
+        String fechaFinalTexto = txtFechaFinal.getText().trim();
+
+        if (fechaInicialTexto.isEmpty()|| fechaFinalTexto.isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Debe ingresar ambas fechas."
+            );
+
+            return;
+        }
+
+        try {
+
+            Date fechaInicial = Date.valueOf(fechaInicialTexto);
+
+            Date fechaFinal = Date.valueOf(fechaFinalTexto);
+
+            ResultSet resultado = reporteDAO.reporteProductosMasVendidos(
+                            fechaInicial,
+                            fechaFinal
+                    );
+
+            DefaultTableModel modelo = new DefaultTableModel();
+
+            modelo.addColumn("Código");
+            modelo.addColumn("Producto");
+            modelo.addColumn("Cantidad Vendida");
+            modelo.addColumn("Total Vendido");
+
+            while (resultado.next()) {
+
+                modelo.addRow(new Object[]{
+                    resultado.getInt("codigo_producto"),
+                    resultado.getString("nombre"),
+                    resultado.getInt("cantidad_vendida"),
+                    resultado.getDouble("total_vendido")
+                });
+            }
+
+            tblReporte.setModel(modelo);
+
+        } catch (IllegalArgumentException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Las fechas deben tener el formato AAAA-MM-DD."
+            );
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al generar el reporte."
+            );
+
+            e.printStackTrace();
+        }
+    }
+
+    private void generarInsumosBajoStock() {
+
+        try {
+
+            ResultSet resultado = reporteDAO.reporteInsumosBajoStock();
+            DefaultTableModel modelo = new DefaultTableModel();
+            modelo.addColumn("Código");
+            modelo.addColumn("Insumo");
+            modelo.addColumn("Unidad");
+            modelo.addColumn("Stock Actual");
+            modelo.addColumn("Stock Mínimo");
+            modelo.addColumn("Costo");
+
+            while (resultado.next()) {
+
+                modelo.addRow(new Object[]{
+                    resultado.getInt("codigo_insumo"),
+                    resultado.getString("nombre"),
+                    resultado.getString("unidad_medida"),
+                    resultado.getDouble("stock_actual"),
+                    resultado.getDouble("stock_minimo"),
+                    resultado.getDouble("costo")
+                });
+            }
+
+            tblReporte.setModel(modelo);
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al generar el reporte."
+            );
+
+            e.printStackTrace();
+        }
+    }
+
+    private void exportarReporteHTML() {
+
+        if (tblReporte.getColumnCount() == 0 || tblReporte.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Primero debe generar un reporte."
+            );
+            return;
+        }
+        JFileChooser selector = new JFileChooser();
+
+        selector.setDialogTitle("Guardar reporte HTML");
+
+        selector.setSelectedFile( new File("reporte.html"));
+
+        int opcion = selector.showSaveDialog(this);
+
+        if (opcion != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+
+        File archivo = selector.getSelectedFile();
+
+        if (!archivo.getName().toLowerCase().endsWith(".html")) {
+
+            archivo = new File(
+                    archivo.getAbsolutePath() + ".html"
+            );
+        }
+
+        try {
+
+            FileWriter escritor
+                    = new FileWriter(archivo);
+
+            escritor.write("""
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Reporte Cafetería</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 40px;
+                        }
+
+                        h1 {
+                            text-align: center;
+                        }
+
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 25px;
+                        }
+
+                        th, td {
+                            border: 1px solid black;
+                            padding: 8px;
+                            text-align: center;
+                        }
+
+                        th {
+                            font-weight: bold;
+                        }
+                    </style>
+                </head>
+                <body>
+                """);
+
+            escritor.write(
+                    "<h1>Reporte de Cafetería</h1>"
+            );
+
+            escritor.write("<table>");
+
+            TableModel modelo = tblReporte.getModel();
+
+            // Encabezados
+            escritor.write("<tr>");
+
+            for (int columna = 0;
+                    columna < modelo.getColumnCount();
+                    columna++) {
+
+                escritor.write(
+                        "<th>"
+                        + escaparHTML(
+                                modelo.getColumnName(columna)
+                        )
+                        + "</th>"
+                );
+            }
+
+            escritor.write("</tr>");
+
+            // Datos
+            for (int fila = 0;
+                    fila < modelo.getRowCount();
+                    fila++) {
+
+                escritor.write("<tr>");
+
+                for (int columna = 0;
+                        columna < modelo.getColumnCount();
+                        columna++) {
+
+                    Object valor
+                            = modelo.getValueAt(
+                                    fila,
+                                    columna
+                            );
+
+                    escritor.write(
+                            "<td>"
+                            + escaparHTML(
+                                    valor == null
+                                            ? ""
+                                            : valor.toString()
+                            )
+                            + "</td>"
+                    );
+                }
+
+                escritor.write("</tr>");
+            }
+
+            escritor.write("""
+                </table>
+                </body>
+                </html>
+                """);
+
+            escritor.close();
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Reporte exportado correctamente."
+            );
+
+        } catch (IOException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al exportar el reporte."
+            );
+
+            e.printStackTrace();
+        }
+    }
+
+    private String escaparHTML(String texto) {
+
+        return texto
+                .replace("&", "&amp;")
+                .replace("<", "&lt;")
+                .replace(">", "&gt;")
+                .replace("\"", "&quot;")
+                .replace("'", "&#39;");
+    }
 }

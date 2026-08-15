@@ -54,22 +54,31 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
         btnLimpiar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblInsumos = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Apartado de Insumos");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 20, -1, -1));
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Codigo de insumo: ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 290, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, -1, -1));
         getContentPane().add(txtCodigoInsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 280, 270, 40));
 
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Nombre de Insumo: ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 360, -1, -1));
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, 270, 40));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 360, -1, -1));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 360, 270, 40));
 
-        jLabel4.setText("Unidad de mediad: ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 440, -1, -1));
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Unidad de medida: ");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 440, -1, -1));
 
         txtUnidadMedia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,14 +87,20 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
         });
         getContentPane().add(txtUnidadMedia, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 430, 270, 40));
 
+        jLabel5.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Stock actual: ");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 520, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 520, -1, -1));
 
+        jLabel6.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Stock Minimo: ");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 590, -1, -1));
         getContentPane().add(txtStockActual, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 510, 270, 40));
         getContentPane().add(txtStockMinimo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 580, 270, 40));
 
+        jLabel7.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Costo de insumo: ");
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 660, -1, -1));
         getContentPane().add(txtCosto, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 660, 270, 40));
@@ -96,7 +111,7 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
                 btnRgistrarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnRgistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 760, -1, -1));
+        getContentPane().add(btnRgistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 760, 130, 50));
 
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -104,7 +119,7 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
                 btnActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 760, -1, -1));
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 760, 140, 50));
 
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
@@ -112,7 +127,7 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
                 btnLimpiarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 760, -1, -1));
+        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 760, 120, 50));
 
         tblInsumos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -134,32 +149,34 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 560, 150));
 
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.png"))); // NOI18N
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 750, 860));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRgistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRgistrarActionPerformed
         // TODO add your handling code here:
-        if(!validarDatos()){
+        if (!validarDatos()) {
             return;
         }
-        
-        
+
         String nombre = txtNombre.getText().trim();
         String unidad = txtUnidadMedia.getText().trim();
         Double stockActual = Double.parseDouble(txtStockActual.getText().trim());
         Double stockMinimo = Double.parseDouble(txtStockMinimo.getText().trim());
         Double costo = Double.parseDouble(txtCosto.getText().trim());
-        
-        Insumo insumo= new Insumo(
+
+        Insumo insumo = new Insumo(
                 nombre,
                 unidad,
                 stockActual,
                 stockMinimo,
                 costo
         );
-        
+
         InsumoDAO dao = new InsumoDAO();
-        
+
         dao.insertarInsumo(insumo);
         cargarTabla();
         limpiarCampos();
@@ -174,31 +191,12 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
         int fila = tblInsumos.getSelectedRow();
 
         if (fila >= 0) {
-
-            txtCodigoInsumo.setText(
-                    tblInsumos.getValueAt(fila, 0).toString()
-            );
-
-            txtNombre.setText(
-                    tblInsumos.getValueAt(fila, 1).toString()
-            );
-
-            txtUnidadMedia.setText(
-                    tblInsumos.getValueAt(fila, 2).toString()
-            );
-
-            txtStockActual.setText(
-                    tblInsumos.getValueAt(fila, 3).toString()
-            );
-
-            txtStockMinimo.setText(
-                    tblInsumos.getValueAt(fila, 4).toString()
-            );
-
-            txtCosto.setText(
-                    tblInsumos.getValueAt(fila, 5).toString()
-            );
-
+            txtCodigoInsumo.setText(tblInsumos.getValueAt(fila, 0).toString());
+            txtNombre.setText(tblInsumos.getValueAt(fila, 1).toString());
+            txtUnidadMedia.setText( tblInsumos.getValueAt(fila, 2).toString());
+            txtStockActual.setText( tblInsumos.getValueAt(fila, 3).toString());
+            txtStockMinimo.setText( tblInsumos.getValueAt(fila, 4).toString());
+            txtCosto.setText( tblInsumos.getValueAt(fila, 5).toString());
         }
     }//GEN-LAST:event_tblInsumosMouseClicked
 
@@ -214,25 +212,12 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
         if (!validarDatos()) {
             return;
         }
-        int codigo = Integer.parseInt(
-                txtCodigoInsumo.getText().trim()
-        );
-        String nombre =
-                txtNombre.getText().trim();
-        String unidad =
-                txtUnidadMedia.getText().trim();
-        double stockActual =
-                Double.parseDouble(
-                        txtStockActual.getText().trim()
-                );
-        double stockMinimo =
-                Double.parseDouble(
-                        txtStockMinimo.getText().trim()
-                );
-        double costo =
-                Double.parseDouble(
-                        txtCosto.getText().trim()
-                );
+        int codigo = Integer.parseInt( txtCodigoInsumo.getText().trim());
+        String nombre = txtNombre.getText().trim();
+        String unidad = txtUnidadMedia.getText().trim();
+        double stockActual = Double.parseDouble(txtStockActual.getText().trim());
+        double stockMinimo = Double.parseDouble( txtStockMinimo.getText().trim());
+        double costo = Double.parseDouble( txtCosto.getText().trim());
         Insumo insumo = new Insumo(
                 codigo,
                 nombre,
@@ -249,7 +234,7 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
         cargarTabla();
 
         limpiarCampos();
-        
+
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -269,6 +254,7 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblInsumos;
     private javax.swing.JTextField txtCodigoInsumo;
@@ -321,12 +307,9 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
             return false;
         }
         try {
-            double stockActual =
-                    Double.parseDouble(txtStockActual.getText());
-            double stockMinimo =
-                    Double.parseDouble(txtStockMinimo.getText());
-            double costo =
-                    Double.parseDouble(txtCosto.getText());
+            double stockActual = Double.parseDouble(txtStockActual.getText());
+            double stockMinimo = Double.parseDouble(txtStockMinimo.getText());
+            double costo = Double.parseDouble(txtCosto.getText());
             if (stockActual < 0 || stockMinimo < 0 || costo <= 0) {
                 JOptionPane.showMessageDialog(
                         this,
@@ -343,7 +326,7 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
         }
         return true;
     }
-    
+
     private void limpiarCampos() {
         txtCodigoInsumo.setText("");
         txtNombre.setText("");
@@ -353,12 +336,12 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
         txtCosto.setText("");
         txtNombre.requestFocus();
     }
-    
+
     private void cargarTabla() {
         InsumoDAO dao = new InsumoDAO();
         ResultSet resultado = dao.listarInsumos();
-        DefaultTableModel modelo =
-                (DefaultTableModel) tblInsumos.getModel();
+        DefaultTableModel modelo
+                = (DefaultTableModel) tblInsumos.getModel();
         modelo.setRowCount(0);
         try {
             while (resultado.next()) {
@@ -380,17 +363,17 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
             );
         }
     }
-    
-    private void verificarBajoSotck(){
+
+    private void verificarBajoSotck() {
         InsumoDAO dao = new InsumoDAO();
         ResultSet resultado = dao.listarInsumos();
         try {
-            while(resultado.next()){
+            while (resultado.next()) {
                 String nombre = resultado.getString("nombre");
                 double stockActual = resultado.getDouble("stock_actual");
                 double stockMinimo = resultado.getDouble("stock_minimo");
-                    if(stockActual<= stockMinimo){
-                         JOptionPane.showMessageDialog(
+                if (stockActual <= stockMinimo) {
+                    JOptionPane.showMessageDialog(
                             this,
                             "El insumo " + nombre
                             + " ha alcanzado o está por debajo "
@@ -399,7 +382,7 @@ public class InsumoFrame extends javax.swing.JInternalFrame {
                             + "\nStock mínimo: " + stockMinimo,
                             "Alerta de inventario",
                             JOptionPane.WARNING_MESSAGE
-                    );  
+                    );
                 }
             }
         } catch (SQLException e) {

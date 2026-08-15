@@ -5,21 +5,19 @@
 package Vistas;
 
 import ComunicacionesDAO.ProductoDAO;
+import java.awt.Desktop;
 import java.awt.Image;
+import java.io.BufferedWriter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Producto;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 /**
  *
@@ -32,7 +30,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
      */
     public ProductoFrame() {
         initComponents();
-        
+
         cargarCategorias();
         txtCodigoProducto.setEditable(false);
         cargarTabla();
@@ -62,35 +60,47 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         btnActualizar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblProductos = new javax.swing.JTable();
-        btnSeleccionar = new javax.swing.JButton();
         lblVistaImagen = new javax.swing.JLabel();
+        btnExportar = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Gestion de Productos");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 40, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, -1, -1));
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Codigo:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, -1, -1));
-        getContentPane().add(txtCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 110, 190, 40));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, -1, -1));
+        getContentPane().add(txtCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 110, 190, 40));
 
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Nombre:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 180, -1, -1));
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 180, 190, 30));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, -1, -1));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 180, 190, 30));
 
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Categoria: ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, -1, -1));
 
         cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, 190, -1));
+        getContentPane().add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 250, 190, 30));
 
+        jLabel5.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Precio: ");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 330, -1, -1));
-        getContentPane().add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 200, 30));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 330, -1, -1));
+        getContentPane().add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, 200, 30));
 
+        jLabel6.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("fotografia: ");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 420, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 410, -1, -1));
 
         txtFotografia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,7 +115,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
                 btnRegistrarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 480, -1, -1));
+        getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 480, 110, 40));
 
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +123,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
                 btnActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 480, -1, -1));
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 480, 100, 40));
 
         tblProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -133,16 +143,19 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tblProductos);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 530, 680, 190));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 630, 680, 190));
+        getContentPane().add(lblVistaImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 120, 190, 160));
 
-        btnSeleccionar.setText("Seleccionar");
-        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+        btnExportar.setText("Exportar HTML");
+        btnExportar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSeleccionarActionPerformed(evt);
+                btnExportarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnSeleccionar, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 410, -1, -1));
-        getContentPane().add(lblVistaImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 120, 190, 160));
+        getContentPane().add(btnExportar, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 560, -1, 40));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.png"))); // NOI18N
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 860, 860));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -173,7 +186,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         }
         double precio;
         try {
-            precio =       Double.parseDouble(precioTexto);
+            precio = Double.parseDouble(precioTexto);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(
                     this,
@@ -188,18 +201,16 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
             );
             return;
         }
-        Producto producto =
-                new Producto(
+        Producto producto = new Producto(
                         0,
                         nombre,
                         categoria,
                         precio,
                         fotografia
                 );
-        ProductoDAO dao =
-                new ProductoDAO();
-        boolean registrado =
-                dao.insertarProducto(producto);
+        
+        ProductoDAO dao = new ProductoDAO();
+        boolean registrado = dao.insertarProducto(producto);
         if (registrado) {
             JOptionPane.showMessageDialog(
                     this,
@@ -222,35 +233,17 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         if (fila == -1) {
             return;
         }
-        txtCodigoProducto.setText(
-                tblProductos.getValueAt(fila, 0).toString()
-        );
-        txtNombre.setText(
-                tblProductos.getValueAt(fila, 1).toString()
-        );
-        cmbCategoria.setSelectedItem(
-                tblProductos.getValueAt(fila, 2).toString()
-        );
-        txtPrecio.setText(
-                tblProductos.getValueAt(fila, 3).toString()
-        );
-        Object fotografia =
-        tblProductos.getValueAt(fila, 4);
-
+        txtCodigoProducto.setText( tblProductos.getValueAt(fila, 0).toString());
+        txtNombre.setText( tblProductos.getValueAt(fila, 1).toString());
+        cmbCategoria.setSelectedItem(tblProductos.getValueAt(fila, 2).toString());
+        txtPrecio.setText(tblProductos.getValueAt(fila, 3).toString());
+        Object fotografia = tblProductos.getValueAt(fila, 4);
         if (fotografia != null) {
-
-            txtFotografia.setText(
-                    fotografia.toString()
-            );
-
-            mostrarImagen(
-                    fotografia.toString()
-            );
+            txtFotografia.setText(fotografia.toString());
+            mostrarImagen(fotografia.toString());
 
         } else {
-
             txtFotografia.setText("");
-
             mostrarImagen("");
         }
     }//GEN-LAST:event_tblProductosMouseClicked
@@ -264,10 +257,10 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         }
         String nombre = txtNombre.getText().trim();
         String categoria = cmbCategoria.getSelectedItem().toString();
-        String precioTexto =txtPrecio.getText().trim();
+        String precioTexto = txtPrecio.getText().trim();
         String fotografia = txtFotografia.getText().trim();
         if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(this,"El nombre no puede estar vacío."
+            JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío."
             );
             return;
         }
@@ -282,16 +275,15 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         try {
             precio = Double.parseDouble(precioTexto);
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this,"El precio debe ser numérico.");
+            JOptionPane.showMessageDialog(this, "El precio debe ser numérico.");
             return;
         }
         if (precio <= 0) {
-            JOptionPane.showMessageDialog(this,"El precio debe ser mayor que cero.");
+            JOptionPane.showMessageDialog(this, "El precio debe ser mayor que cero.");
             return;
         }
         int codigo = Integer.parseInt(txtCodigoProducto.getText().trim());
-        Producto producto =
-                new Producto(
+        Producto producto = new Producto(
                         codigo,
                         nombre,
                         categoria,
@@ -312,82 +304,186 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
-    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+    private void btnExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarActionPerformed
         // TODO add your handling code here:
-        JFileChooser selector = new JFileChooser();
+        ProductoDAO dao = new ProductoDAO();
 
-        FileNameExtensionFilter filtro =
-                new FileNameExtensionFilter(
-                        "Imágenes JPG, JPEG y PNG",
-                        "jpg",
-                        "jpeg",
-                        "png"
-                );
-        selector.setFileFilter(filtro);
-        int resultado =
-                selector.showOpenDialog(this);
-        if (resultado != JFileChooser.APPROVE_OPTION) {
+    try {
+
+        ResultSet resultado = dao.consultarProductos();
+
+        StringBuilder html = new StringBuilder();
+
+        html.append("""
+                <!DOCTYPE html>
+                <html lang="es">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+                    <title>JavaBeans Café - Menú</title>
+
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            background-color: #f5f1e8;
+                            margin: 0;
+                            padding: 30px;
+                        }
+
+                        h1 {
+                            text-align: center;
+                        }
+
+                        .menu {
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                            gap: 25px;
+                            max-width: 1200px;
+                            margin: auto;
+                        }
+
+                        .producto {
+                            background-color: white;
+                            border-radius: 15px;
+                            padding: 20px;
+                            text-align: center;
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+                        }
+
+                        .producto img {
+                            width: 100%;
+                            height: 200px;
+                            object-fit: cover;
+                            border-radius: 10px;
+                        }
+
+                        .producto h2 {
+                            margin-bottom: 10px;
+                        }
+
+                        .categoria {
+                            font-size: 14px;
+                            color: #777;
+                        }
+
+                        .precio {
+                            font-size: 20px;
+                            font-weight: bold;
+                        }
+                    </style>
+
+                </head>
+
+                <body>
+
+                    <h1>JavaBeans Café</h1>
+
+                    <div class="menu">
+                """);
+
+        boolean hayProductos = false;
+
+        while (resultado.next()) {
+
+            hayProductos = true;
+
+            String nombre =
+                    resultado.getString("nombre");
+
+            String categoria =
+                    resultado.getString("categoria");
+
+            double precio =
+                    resultado.getDouble("precio");
+
+            String fotografia =
+                    resultado.getString("fotografia");
+
+            html.append("<div class=\"producto\">");
+
+            html.append("<img src=\"")
+                    .append(fotografia)
+                    .append("\" alt=\"")
+                    .append(nombre)
+                    .append("\">");
+
+            html.append("<h2>")
+                    .append(nombre)
+                    .append("</h2>");
+
+            html.append("<p class=\"categoria\">")
+                    .append(categoria)
+                    .append("</p>");
+
+            html.append("<p class=\"precio\">Q")
+                    .append(String.format("%.2f", precio))
+                    .append("</p>");
+
+            html.append("</div>");
+        }
+
+        html.append("""
+                    </div>
+
+                </body>
+                </html>
+                """);
+
+        resultado.close();
+
+        if (!hayProductos) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No existen productos registrados."
+            );
+
             return;
         }
-        File archivoOriginal =
-                selector.getSelectedFile();
-        try {
-            Path carpetaImagenes =
-                    Paths.get(
-                            "src",
-                            "main",
-                            "resources",
-                            "imagenes"
-                    );
-            Files.createDirectories(carpetaImagenes);
-            String nombreArchivo =
-                    archivoOriginal.getName();
-            Path destino =
-                    carpetaImagenes.resolve(
-                            nombreArchivo
-                    );
-            Files.copy(
-                    archivoOriginal.toPath(),
-                    destino,
-                    StandardCopyOption.REPLACE_EXISTING
-            );
-            String rutaRelativa = "imagenes/" + nombreArchivo;
-            txtFotografia.setText(rutaRelativa
-            );
-            ImageIcon icono = new ImageIcon(archivoOriginal.getAbsolutePath());
-            Image imagen = icono.getImage();
-            Image imagenEscalada = imagen.getScaledInstance(
-                            lblVistaImagen.getWidth(),
-                            lblVistaImagen.getHeight(),
-                            Image.SCALE_SMOOTH
-                    );
-            lblVistaImagen.setIcon(
-                    new ImageIcon(imagenEscalada)
-            );
 
-            lblVistaImagen.setText("");
+        File archivo = new File("menu.html");
 
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Imagen seleccionada correctamente."
-            );
+        try (BufferedWriter escritor =
+                     new BufferedWriter(
+                             new FileWriter(archivo)
+                     )) {
 
-        } catch (IOException e) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "No se pudo copiar la imagen."
-            );
-
-            e.printStackTrace();
+            escritor.write(html.toString());
         }
-    }//GEN-LAST:event_btnSeleccionarActionPerformed
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Menú HTML exportado correctamente."
+        );
+
+        Desktop.getDesktop().open(archivo);
+
+    } catch (SQLException e) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Error al consultar los productos."
+        );
+
+        e.printStackTrace();
+
+    } catch (IOException e) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "No se pudo generar el archivo HTML."
+        );
+
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_btnExportarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnExportar;
     private javax.swing.JButton btnRegistrar;
-    private javax.swing.JButton btnSeleccionar;
     private javax.swing.JComboBox<String> cmbCategoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -395,6 +491,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblVistaImagen;
     private javax.swing.JTable tblProductos;
@@ -403,7 +500,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtPrecio;
     // End of variables declaration//GEN-END:variables
-    
+
     private void cargarCategorias() {
         cmbCategoria.removeAllItems();
         cmbCategoria.addItem("BEBIDA_CALIENTE");
@@ -411,18 +508,16 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         cmbCategoria.addItem("POSTRE");
         cmbCategoria.addItem("COMIDA");
     }
-    
+
     private void cargarTabla() {
 
-        DefaultTableModel modelo =
-                (DefaultTableModel) tblProductos.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
 
         modelo.setRowCount(0);
 
         ProductoDAO dao = new ProductoDAO();
 
-        ResultSet resultado =
-                dao.consultarProductos();
+        ResultSet resultado = dao.consultarProductos();
 
         try {
 
@@ -446,14 +541,15 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
             );
         }
     }
-    
-    private void limpiarCampos(){
+
+    private void limpiarCampos() {
         txtCodigoProducto.setText("");
         txtNombre.setText("");
         txtPrecio.setText("");
         txtFotografia.setText("");
     }
-        private void mostrarImagen(String ruta) {
+
+    private void mostrarImagen(String ruta) {
 
         if (ruta == null || ruta.isEmpty()) {
 
@@ -463,10 +559,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
             return;
         }
 
-        File archivo =
-                new File(
-                        "src/main/resources/" + ruta
-                );
+        File archivo = new File("src/main/resources/" + ruta);
 
         if (!archivo.exists()) {
 
@@ -475,25 +568,16 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
 
             return;
         }
+        ImageIcon icono = new ImageIcon(archivo.getAbsolutePath());
 
-        ImageIcon icono =
-                new ImageIcon(
-                        archivo.getAbsolutePath()
-                );
-
-        Image imagen =
-                icono.getImage();
-
-        Image imagenEscalada =
-                imagen.getScaledInstance(
+        Image imagen = icono.getImage();
+        Image imagenEscalada = imagen.getScaledInstance(
                         lblVistaImagen.getWidth(),
                         lblVistaImagen.getHeight(),
                         Image.SCALE_SMOOTH
                 );
 
-        lblVistaImagen.setIcon(
-                new ImageIcon(imagenEscalada)
-        );
+        lblVistaImagen.setIcon( new ImageIcon(imagenEscalada));
 
         lblVistaImagen.setText("");
     }

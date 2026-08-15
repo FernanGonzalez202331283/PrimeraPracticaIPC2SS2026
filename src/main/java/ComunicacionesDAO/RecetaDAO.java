@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
 import modelo.Receta;
 
 /**
@@ -17,170 +16,174 @@ import modelo.Receta;
  * @author fernan
  */
 public class RecetaDAO {
+
     private Connection connection;
 
-    public RecetaDAO(){
+    public RecetaDAO() {
 
         ConexionDAO conexionDAO = new ConexionDAO();
         connection = conexionDAO.Connectar();
 
     }
-    
-    public static final String INSERTAR_RECETA =
-            """
+
+    public static final String INSERTAR_RECETA
+            = """
             INSERT INTO receta
             (codigo_producto,codigo_insumo,cantidad)
             VALUES(?,?,?)
             """;
 
-
-    public static final String CONSULTAR_RECETAS =
-            """
-            SELECT *
-            FROM receta
-            ORDER BY codigo_producto
+    public static final String CONSULTAR_RECETAS
+            = """
+            SELECT
+                r.id_receta,
+                p.nombre AS producto,
+                i.nombre AS insumo,
+                r.cantidad
+            FROM receta r
+            INNER JOIN producto p
+                ON r.codigo_producto = p.codigo_producto
+            INNER JOIN insumo i
+                ON r.codigo_insumo = i.codigo_insumo
+            ORDER BY r.id_receta
             """;
 
+    public static final String VERIFICAR_RECETA
+            = """
+            SELECT id_receta
+            FROM receta
+            WHERE codigo_producto = ?
+            AND codigo_insumo = ?
+            """;
 
-    public static final String ACTUALIZAR_RECETA =
-            """
+    public static final String CONSULTAR_RECETA_PRODUCTO
+            = """
+            SELECT codigo_insumo, cantidad
+            FROM receta
+            WHERE codigo_producto = ?
+            """;
+
+    public static final String ACTUALIZAR_RECETA
+            = """
             UPDATE receta
-            SET codigo_insumo = ?,
-            cantidad = ?
+            SET codigo_producto = ?,
+                codigo_insumo = ?,
+                cantidad = ?
             WHERE id_receta = ?
             """;
-    
-    public void registrarReceta(){
 
-    Scanner scanner = new Scanner(System.in);
+    public static final String ELIMINAR_RECETA
+            = """
+            DELETE FROM receta
+            WHERE id_receta = ?
+            """;
 
-    System.out.println("Ingrese código del producto:");
+    public boolean insertarReceta(Receta receta) {
+        try {
+            PreparedStatement statement = connection.prepareStatement( INSERTAR_RECETA);
+            statement.setInt( 1, receta.getCodigoProducto());
+            statement.setInt( 2, receta.getCodigoInsumo());
+            statement.setDouble( 3, receta.getCantidad());
 
-    int codigoProducto = scanner.nextInt();
+            int filas = statement.executeUpdate();
+            return filas > 0;
 
-    System.out.println("Ingrese código del insumo:");
+        } catch (SQLException e) {
 
-    int codigoInsumo = scanner.nextInt();
+            e.printStackTrace();
 
-    System.out.println("Ingrese cantidad necesaria:");
-
-    double cantidad = scanner.nextDouble();
-
-    Receta receta = new Receta(
-            0,
-            codigoProducto,
-            codigoInsumo,
-            cantidad
-    );
-
-    try{
-
-        PreparedStatement statement =
-                connection.prepareStatement(INSERTAR_RECETA);
-
-        statement.setInt(1, receta.getCodigoProducto());
-        statement.setInt(2, receta.getCodigoInsumo());
-        statement.setDouble(3, receta.getCantidad());
-
-        int filas = statement.executeUpdate();
-
-        if(filas > 0){
-
-            System.out.println("Receta registrada correctamente.");
-
+            return false;
         }
-
-    }catch(SQLException e){
-
-        e.printStackTrace();
-
     }
 
-}
-    public void listarRecetas(){
+    public ResultSet consultarRecetas() {
 
-    try{
+        try {
 
-        PreparedStatement statement =
-                connection.prepareStatement(CONSULTAR_RECETAS);
+            PreparedStatement statement = connection.prepareStatement( CONSULTAR_RECETAS);
+            return statement.executeQuery();
 
-        ResultSet resultado = statement.executeQuery();
+        } catch (SQLException e) {
 
-        while(resultado.next()){
+            e.printStackTrace();
 
-            System.out.println("---------------------------");
-
-            System.out.println(
-                    "ID Receta: "
-                    + resultado.getInt("id_receta")
-            );
-
-            System.out.println(
-                    "Producto: "
-                    + resultado.getInt("codigo_producto")
-            );
-
-            System.out.println(
-                    "Insumo: "
-                    + resultado.getInt("codigo_insumo")
-            );
-
-            System.out.println(
-                    "Cantidad: "
-                    + resultado.getDouble("cantidad")
-            );
-
+            return null;
         }
-
-    }catch(SQLException e){
-
-        e.printStackTrace();
-
     }
 
-}
-    public void actualizarReceta(){
+    public boolean actualizarReceta(Receta receta) {
+        try {
+            PreparedStatement statement = connection.prepareStatement( ACTUALIZAR_RECETA );
+            statement.setInt(1, receta.getCodigoProducto());
+            statement.setInt( 2,receta.getCodigoInsumo());
+            statement.setDouble( 3, receta.getCantidad());
+            statement.setInt( 4, receta.getIdReceta());
 
-    Scanner scanner = new Scanner(System.in);
+            int filas = statement.executeUpdate();
 
-    System.out.println("Ingrese ID de la receta:");
+            return filas > 0;
 
-    int id = scanner.nextInt();
+        } catch (SQLException e) {
 
-    System.out.println("Nuevo código de insumo:");
+            e.printStackTrace();
 
-    int codigoInsumo = scanner.nextInt();
-
-    System.out.println("Nueva cantidad:");
-
-    double cantidad = scanner.nextDouble();
-
-    try{
-
-        PreparedStatement statement =
-                connection.prepareStatement(ACTUALIZAR_RECETA);
-
-        statement.setInt(1, codigoInsumo);
-        statement.setDouble(2, cantidad);
-        statement.setInt(3, id);
-
-        int filas = statement.executeUpdate();
-
-        if(filas > 0){
-
-            System.out.println("Receta actualizada correctamente.");
-
-        }else{
-
-            System.out.println("No existe una receta con ese ID.");
-
+            return false;
         }
-
-    }catch(SQLException e){
-
-        e.printStackTrace();
-
     }
 
-}
+    public boolean existeReceta(int codigoProducto, int codigoInsumo) {
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement(VERIFICAR_RECETA);
+
+            statement.setInt(1, codigoProducto);
+            statement.setInt(2, codigoInsumo);
+
+            ResultSet resultado
+                    = statement.executeQuery();
+
+            return resultado.next();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarReceta(int idReceta) {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(ELIMINAR_RECETA);
+            statement.setInt(1, idReceta);
+
+            int filas
+                    = statement.executeUpdate();
+
+            return filas > 0;
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+
+            return false;
+        }
+    }
+
+    public ResultSet consultarRecetaProducto(int codigoProducto) {
+
+        try {
+            PreparedStatement statement = connection.prepareStatement( CONSULTAR_RECETA_PRODUCTO );
+            statement.setInt(1, codigoProducto);
+            return statement.executeQuery();
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
 }

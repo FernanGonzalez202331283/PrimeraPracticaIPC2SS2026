@@ -9,7 +9,8 @@ package Vistas;
  * @author fernan
  */
 public class FrmVentaPrincipal extends javax.swing.JFrame {
-    
+
+    private MesaFrame mesaFrame;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmVentaPrincipal.class.getName());
 
     /**
@@ -46,7 +47,6 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         menuMesa = new javax.swing.JMenuItem();
         cuenta = new javax.swing.JMenu();
         menuCuenta = new javax.swing.JMenuItem();
-        menuDetalleCuenta = new javax.swing.JMenuItem();
         reportes = new javax.swing.JMenu();
         menuFlujoCaja = new javax.swing.JMenuItem();
         menuProductosVendidos = new javax.swing.JMenuItem();
@@ -173,14 +173,6 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         });
         cuenta.add(menuCuenta);
 
-        menuDetalleCuenta.setText("Detalle Cuenta");
-        menuDetalleCuenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuDetalleCuentaActionPerformed(evt);
-            }
-        });
-        cuenta.add(menuDetalleCuenta);
-
         jMenuBar1.add(cuenta);
 
         reportes.setText("Reportes");
@@ -221,7 +213,7 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_empleadoActionPerformed
 
     private void menuEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEmpleadoActionPerformed
-       EmpleadoFrame empleado = new EmpleadoFrame();
+        EmpleadoFrame empleado = new EmpleadoFrame();
 
         desktopPane.add(empleado);
 
@@ -264,24 +256,37 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
 
     private void menuMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuMesaActionPerformed
         // TODO add your handling code here:
-        MesaFrame mesa = new MesaFrame();
-        desktopPane.add(mesa);
-        mesa.setVisible(true);
+        if (mesaFrame == null || mesaFrame.isClosed()) {
+
+            mesaFrame = new MesaFrame();
+
+            desktopPane.add(mesaFrame);
+
+            mesaFrame.setVisible(true);
+
+        } else {
+
+            try {
+                mesaFrame.setSelected(true);
+            } catch (java.beans.PropertyVetoException e) {
+                e.printStackTrace();
+            }
+        }
     }//GEN-LAST:event_menuMesaActionPerformed
 
     private void menuCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuCuentaActionPerformed
         // TODO add your handling code here:
-        CuentaFrame cuenta = new CuentaFrame();
+        CuentaFrame cuenta;
+
+        if (mesaFrame != null && !mesaFrame.isClosed()) {
+            cuenta = new CuentaFrame(mesaFrame);
+        } else {
+            cuenta = new CuentaFrame();
+        }
+
         desktopPane.add(cuenta);
         cuenta.setVisible(true);
     }//GEN-LAST:event_menuCuentaActionPerformed
-
-    private void menuDetalleCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDetalleCuentaActionPerformed
-        // TODO add your handling code here:
-        DetalleCuentaFrame detalleCuenta = new DetalleCuentaFrame();
-        desktopPane.add(detalleCuenta);
-        detalleCuenta.setVisible(true);
-    }//GEN-LAST:event_menuDetalleCuentaActionPerformed
 
     private void menuFlujoCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFlujoCajaActionPerformed
         // TODO add your handling code here:
@@ -293,7 +298,7 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
 
     private void menuProductosVendidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuProductosVendidosActionPerformed
         // TODO add your handling code here:
-         ReporteFrame reporte = new ReporteFrame();
+        ReporteFrame reporte = new ReporteFrame();
         //metodo para los reportes
         desktopPane.add(reporte);
         reporte.setVisible(true);
@@ -301,7 +306,7 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
 
     private void menuStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuStockActionPerformed
         // TODO add your handling code here:
-         ReporteFrame reporte = new ReporteFrame();
+        ReporteFrame reporte = new ReporteFrame();
         //metodo para los reportes
         desktopPane.add(reporte);
         reporte.setVisible(true);
@@ -319,7 +324,6 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem menuCompra;
     private javax.swing.JMenuItem menuCuenta;
-    private javax.swing.JMenuItem menuDetalleCuenta;
     private javax.swing.JMenuItem menuEmpleado;
     private javax.swing.JMenuItem menuFlujoCaja;
     private javax.swing.JMenuItem menuInsumo;

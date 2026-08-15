@@ -77,60 +77,74 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
         scrollEmpleados = new javax.swing.JScrollPane();
         tblEmpleados = new javax.swing.JTable();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Ingrese DPI: ");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 270, -1, 20));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 320, -1, 30));
 
         txtDpi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDpiActionPerformed(evt);
             }
         });
-        getContentPane().add(txtDpi, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 260, 300, 40));
+        getContentPane().add(txtDpi, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 320, 300, 40));
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Ingrese Nombre: ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 340, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 400, -1, -1));
 
         txtNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNombreActionPerformed(evt);
             }
         });
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 330, 300, 40));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 390, 300, 40));
 
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Seleccione un Rol: ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 420, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 470, -1, -1));
 
         cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(cmbRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 410, 300, 30));
+        getContentPane().add(cmbRol, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 470, 300, 30));
 
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Seleccione una Jornada: ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 490, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 540, -1, -1));
 
         cmbJornada.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(cmbJornada, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 480, 310, 30));
+        getContentPane().add(cmbJornada, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 540, 310, 30));
 
+        jLabel5.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Ingrese Salario: ");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 550, -1, 30));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 610, -1, 30));
 
         txtSalario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtSalarioActionPerformed(evt);
             }
         });
-        getContentPane().add(txtSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 550, 300, 30));
+        getContentPane().add(txtSalario, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 610, 300, 40));
 
+        jLabel6.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Ingrese Fecha: ");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 620, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 680, -1, -1));
 
         txtFecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFechaActionPerformed(evt);
             }
         });
-        getContentPane().add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 610, 300, 40));
+        getContentPane().add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 670, 300, 40));
 
         btnRegistrar.setText("Registrar");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -138,7 +152,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
                 btnRegistrarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 690, 100, 50));
+        getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 750, 100, 50));
 
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -146,7 +160,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
                 btnActualizarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(284, 690, 100, 50));
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 750, 100, 50));
 
         btnDeshabilitar.setText("Deshabilitar/Activar");
         btnDeshabilitar.addActionListener(new java.awt.event.ActionListener() {
@@ -154,7 +168,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
                 btnDeshabilitarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnDeshabilitar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 690, -1, 50));
+        getContentPane().add(btnDeshabilitar, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 750, -1, 50));
 
         btnLimpiar.setText("Limpiar");
         btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
@@ -162,7 +176,7 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
                 btnLimpiarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 700, 100, 40));
+        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 760, 100, 40));
 
         tblEmpleados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -188,8 +202,16 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
 
         jScrollPane1.setViewportView(scrollEmpleados);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 50, 580, 140));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 120, 580, 140));
         getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 760, 340, 50));
+
+        jLabel8.setFont(new java.awt.Font("Ubuntu", 3, 36)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel8.setText("GESTION DE EMPLEADOS");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 50, -1, -1));
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.png"))); // NOI18N
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 810, 850));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -211,18 +233,33 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtFechaActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        // TODO add your handling code here:
-           if (!validarDatos()) {
+     if (!validarDatos()) {
         return;
     }
-        String dpi = txtDpi.getText();
-        String nombre = txtNombre.getText();
-        String rol = cmbRol.getSelectedItem().toString();
-        String jornada = cmbJornada.getSelectedItem().toString();
-        double salario = Double.parseDouble(txtSalario.getText());
-        String fecha = txtFecha.getText();
-        
-        Empleado empleado = new Empleado(
+
+    String dpi = txtDpi.getText().trim();
+    String nombre = txtNombre.getText().trim();
+    String rol = cmbRol.getSelectedItem().toString();
+    String jornada = cmbJornada.getSelectedItem().toString();
+    double salario = Double.parseDouble(txtSalario.getText().trim());
+    String fecha = txtFecha.getText().trim();
+
+    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+
+    // Verificar si el DPI ya existe
+    if (empleadoDAO.existeEmpleado(dpi)) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "El DPI ingresado ya está registrado."
+        );
+
+        txtDpi.requestFocus();
+
+        return;
+    }
+
+    Empleado empleado = new Empleado(
             dpi,
             nombre,
             rol,
@@ -232,11 +269,29 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
             true
     );
 
-    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+    boolean registrado =
+            empleadoDAO.insertarEmpleado(empleado);
 
-    empleadoDAO.insertarEmpleado(empleado);
-    
-    limpiarCampos();
+    if (registrado) {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Empleado registrado correctamente."
+        );
+
+        // Actualizar la tabla
+        cargarTabla();
+
+        // Limpiar los campos
+        limpiarCampos();
+
+    } else {
+
+        JOptionPane.showMessageDialog(
+                this,
+                "No se pudo registrar el empleado."
+        );
+    }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void cargarTabla() {
@@ -246,11 +301,13 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
 
     modelo.setRowCount(0);
 
-    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
-
-    ResultSet resultado = empleadoDAO.obtenerEmpleados();
+    EmpleadoDAO empleadoDAO =
+            new EmpleadoDAO();
 
     try {
+
+        ResultSet resultado =
+                empleadoDAO.obtenerEmpleados();
 
         while (resultado.next()) {
 
@@ -263,19 +320,20 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
                 resultado.getDouble("salario"),
                 resultado.getDate("fecha_contratacion"),
                 resultado.getBoolean("estado")
-
             };
 
             modelo.addRow(fila);
-
         }
 
     } catch (SQLException e) {
 
+        JOptionPane.showMessageDialog(
+                this,
+                "Error al cargar los empleados."
+        );
+
         e.printStackTrace();
-
     }
-
 }
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
@@ -392,6 +450,8 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane scrollEmpleados;
     private javax.swing.JTable tblEmpleados;

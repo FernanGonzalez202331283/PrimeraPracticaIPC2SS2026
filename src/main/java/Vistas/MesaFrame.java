@@ -4,6 +4,13 @@
  */
 package Vistas;
 
+import ComunicacionesDAO.MesaDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Mesa;
+
 /**
  *
  * @author fernan
@@ -15,6 +22,8 @@ public class MesaFrame extends javax.swing.JInternalFrame {
      */
     public MesaFrame() {
         initComponents();
+        cargarTabla();
+        cargarPanelMesas();
     }
 
     /**
@@ -26,21 +35,346 @@ public class MesaFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        txtTitulo = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txtNumeroMesa = new javax.swing.JTextField();
+        txtCapacidad = new javax.swing.JTextField();
+        btnRegistrar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblMesas = new javax.swing.JTable();
+        btnActualizar = new javax.swing.JButton();
+        panelMesas = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtTitulo.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        txtTitulo.setForeground(new java.awt.Color(0, 0, 0));
+        txtTitulo.setText("CONTROL DE MESAS");
+        getContentPane().add(txtTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 30, -1, -1));
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("numero de mesa: ");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 420, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Capacidad: ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 490, -1, -1));
+        getContentPane().add(txtNumeroMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 420, 160, 30));
+        getContentPane().add(txtCapacidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 490, 160, 30));
+
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRegistrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 560, 100, 50));
+
+        tblMesas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Numero", "Capacidad", "Estado"
+            }
+        ));
+        tblMesas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblMesasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblMesas);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 660, 600, 170));
+
+        btnActualizar.setText("actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 560, 110, 50));
+        getContentPane().add(panelMesas, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 790, 320));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.png"))); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 960, 880));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        // TODO add your handling code here:
+        if (txtNumeroMesa.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese el número de mesa."
+            );
+            return;
+        }
+
+        if (txtCapacidad.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese la capacidad de la mesa."
+            );
+
+            return;
+        }
+
+        int numeroMesa;
+        int capacidad;
+
+        try {
+
+            numeroMesa = Integer.parseInt( txtNumeroMesa.getText().trim());
+            capacidad = Integer.parseInt( txtCapacidad.getText().trim());
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El número de mesa y la capacidad deben ser números."
+            );
+
+            return;
+        }
+
+        if (numeroMesa <= 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El número de mesa debe ser mayor a cero."
+            );
+
+            return;
+        }
+
+        if (capacidad <= 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La capacidad debe ser mayor a cero."
+            );
+            return;
+        }
+        Mesa mesa = new Mesa(
+                numeroMesa,
+                capacidad,
+                "LIBRE"
+        );
+        MesaDAO dao = new MesaDAO();
+        boolean registrado
+                = dao.insertarMesa(mesa);
+        if (registrado) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Mesa registrada correctamente."
+            );
+
+            txtNumeroMesa.setText("");
+            txtCapacidad.setText("");
+
+            cargarTabla();
+            cargarPanelMesas();
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo registrar la mesa."
+            );
+        }
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+        if (txtNumeroMesa.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione una mesa de la tabla."
+            );
+
+            return;
+        }
+
+        if (txtCapacidad.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese la capacidad."
+            );
+
+            return;
+        }
+
+        int numeroMesa;
+        int capacidad;
+
+        try {
+
+            numeroMesa = Integer.parseInt(txtNumeroMesa.getText().trim());
+            capacidad = Integer.parseInt( txtCapacidad.getText().trim());
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El número de mesa y la capacidad deben ser números."
+            );
+
+            return;
+        }
+
+        if (capacidad <= 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La capacidad debe ser mayor a cero."
+            );
+
+            return;
+        }
+
+        int fila = tblMesas.getSelectedRow();
+
+        if (fila < 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione una mesa de la tabla."
+            );
+
+            return;
+        }
+
+        String estado = tblMesas.getValueAt(fila, 2).toString();
+        Mesa mesa = new Mesa(
+                numeroMesa,
+                capacidad,
+                estado
+        );
+
+        MesaDAO dao = new MesaDAO();
+
+        boolean actualizado = dao.actualizarMesa(mesa);
+        if (actualizado) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Mesa actualizada correctamente."
+            );
+
+            txtNumeroMesa.setText("");
+            txtCapacidad.setText("");
+
+            cargarTabla();
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo actualizar la mesa."
+            );
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void tblMesasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMesasMouseClicked
+        // TODO add your handling code here:
+        int fila = tblMesas.getSelectedRow();
+
+        if (fila >= 0) {
+
+            txtNumeroMesa.setText( tblMesas.getValueAt(fila, 0).toString());
+            txtCapacidad.setText(tblMesas.getValueAt(fila, 1).toString());
+        }
+    }//GEN-LAST:event_tblMesasMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
+    private javax.swing.JButton btnRegistrar;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel panelMesas;
+    private javax.swing.JTable tblMesas;
+    private javax.swing.JTextField txtCapacidad;
+    private javax.swing.JTextField txtNumeroMesa;
+    private javax.swing.JLabel txtTitulo;
     // End of variables declaration//GEN-END:variables
+    private void cargarTabla() {
+        DefaultTableModel modelo = (DefaultTableModel) tblMesas.getModel();
+        modelo.setRowCount(0);
+        MesaDAO dao = new MesaDAO();
+        try {
+            ResultSet resultado = dao.consultarMesas();
+            while (resultado.next()) {
+                modelo.addRow(
+                        new Object[]{
+                            resultado.getInt("numero_mesa"),
+                            resultado.getInt("capacidad"),
+                            resultado.getString("estado")
+                        }
+                );
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar las mesas."
+            );
+            e.printStackTrace();
+        }
+    }
+
+    private void cargarPanelMesas() {
+        panelMesas.removeAll();
+
+        MesaDAO dao = new MesaDAO();
+
+        try {
+
+            ResultSet resultado = dao.consultarMesas();
+            while (resultado.next()) {
+
+                int numeroMesa = resultado.getInt("numero_mesa");
+
+                int capacidad = resultado.getInt("capacidad");
+
+                String estado = resultado.getString("estado");
+
+                panelMesa mesa = new panelMesa(
+                        numeroMesa,
+                        capacidad,
+                        estado
+                );
+
+                panelMesas.add(mesa);
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar las mesas gráficamente."
+            );
+
+            e.printStackTrace();
+        }
+
+        panelMesas.revalidate();
+        panelMesas.repaint();
+    }
+
+    public void actualizarMesas() {
+        cargarTabla();
+        cargarPanelMesas();
+    }
 }

@@ -6,9 +6,12 @@ package Vistas;
 
 import ComunicacionesDAO.InsumoDAO;
 import ComunicacionesDAO.ProductoDAO;
+import ComunicacionesDAO.RecetaDAO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Receta;
 
 /**
  *
@@ -21,8 +24,13 @@ public class RecetaFrame extends javax.swing.JInternalFrame {
      */
     public RecetaFrame() {
         initComponents();
+
+        tblReceta.getColumnModel().getColumn(0).setMinWidth(0);
+        tblReceta.getColumnModel().getColumn(0).setMaxWidth(0);
+        tblReceta.getColumnModel().getColumn(0).setWidth(0);
         cargarInsumos();
         cargarProductos();
+        cargarTabla();
     }
 
     /**
@@ -45,28 +53,42 @@ public class RecetaFrame extends javax.swing.JInternalFrame {
         btnEliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblReceta = new javax.swing.JTable();
+        btnActualizar = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("GESTION DE RECETAS");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 41, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
 
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Producto: ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 130, -1, -1));
 
         cmbProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(cmbProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, 110, -1));
+        cmbProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbProductoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cmbProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 120, 220, 30));
 
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Insumo: ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 230, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 210, -1, -1));
 
         cmbInsumo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(cmbInsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, 110, -1));
+        getContentPane().add(cmbInsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 200, 220, 40));
 
+        jLabel4.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Cantidad: ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 310, -1, -1));
-        getContentPane().add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 300, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 310, -1, -1));
+        getContentPane().add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 310, 160, 30));
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -74,10 +96,15 @@ public class RecetaFrame extends javax.swing.JInternalFrame {
                 btnAgregarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 370, -1, -1));
+        getContentPane().add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 390, 120, 40));
 
         btnEliminar.setText("Eliminar");
-        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 370, -1, -1));
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, 120, 40));
 
         tblReceta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -87,22 +114,320 @@ public class RecetaFrame extends javax.swing.JInternalFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Producto", "Insumo", "Cantidad"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblReceta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblRecetaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblReceta);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 460, 590, 150));
+
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnActualizarMouseClicked(evt);
+            }
+        });
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnActualizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 390, 130, 40));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.png"))); // NOI18N
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 670));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
+        if (cmbProducto.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "seleccione un Producto");
+            return;
+        }
+
+        if (cmbInsumo.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(this, "seleccione un Insumo");
+            return;
+        }
+
+        if (txtCantidad.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese una cantidad");
+            return;
+        }
+
+        String productoSeleccionado = cmbProducto.getSelectedItem().toString();
+        String insumoSeleccionado = cmbInsumo.getSelectedItem().toString();
+
+        int codigoProducto;
+        int codigoInsumo;
+
+        try {
+            codigoProducto = Integer.parseInt(productoSeleccionado.split(" - ")[0]);
+            codigoInsumo = Integer.parseInt(insumoSeleccionado.split(" - ")[0]);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "no se pudo obtener codigo");
+            return;
+        }
+
+        double cantidad;
+        try {
+            cantidad = Double.parseDouble(txtCantidad.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "la cantidad debe de ser numerica");
+            return;
+        }
+
+        if (cantidad <= 0) {
+            JOptionPane.showMessageDialog(this, "la cantidad debe de ser mayor a cero");
+            return;
+        }
+        RecetaDAO dao = new RecetaDAO();
+
+        if (dao.existeReceta(codigoProducto, codigoInsumo)) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Este insumo ya pertenece a la receta de este producto."
+            );
+
+            return;
+        }
+
+        Receta receta = new Receta(
+                        0,
+                        codigoProducto,
+                        codigoInsumo,
+                        cantidad
+                );
+
+        boolean registrado = dao.insertarReceta(receta);
+
+        if (registrado) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Receta agregada correctamente."
+            );
+
+            txtCantidad.setText("");
+
+            cargarTabla();
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo registrar la receta."
+            );
+        }
+
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+
+        int fila = tblReceta.getSelectedRow();
+
+        if (fila == -1) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione una receta de la tabla."
+            );
+
+            return;
+        }
+
+        if (txtCantidad.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese una cantidad."
+            );
+
+            return;
+        }
+
+        // id de la receta
+        int idReceta = Integer.parseInt(
+                        tblReceta
+                        .getValueAt(fila, 0)
+                        .toString()
+                );
+
+        // Producto seleccionado
+        String productoSeleccionado = cmbProducto.getSelectedItem().toString();
+
+        // Insumo seleccionado
+        String insumoSeleccionado = cmbInsumo.getSelectedItem().toString();
+
+        int codigoProducto;
+        int codigoInsumo;
+
+        try {
+
+            codigoProducto = Integer.parseInt( productoSeleccionado.split(" - ")[0]);
+            codigoInsumo = Integer.parseInt( insumoSeleccionado.split(" - ")[0]);
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudieron obtener los códigos."
+            );
+
+            return;
+        }
+
+        double cantidad;
+
+        try {
+
+            cantidad = Double.parseDouble( txtCantidad.getText().trim());
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La cantidad debe ser numérica."
+            );
+
+            return;
+        }
+
+        if (cantidad <= 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La cantidad debe ser mayor a cero."
+            );
+
+            return;
+        }
+
+        Receta receta = new Receta(
+                        idReceta,
+                        codigoProducto,
+                        codigoInsumo,
+                        cantidad
+                );
+
+        RecetaDAO dao = new RecetaDAO();
+
+        boolean actualizado = dao.actualizarReceta(receta);
+        if (actualizado) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Receta actualizada correctamente."
+            );
+
+            txtCantidad.setText("");
+
+            cargarTabla();
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo actualizar la receta."
+            );
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnActualizarMouseClicked
+
+    private void tblRecetaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblRecetaMouseClicked
+        // TODO add your handling code here:
+        int fila = tblReceta.getSelectedRow();
+
+        if (fila == -1) {
+            return;
+        }
+
+        String producto = tblReceta.getValueAt(fila, 1).toString();
+
+        String insumo = tblReceta.getValueAt(fila, 2).toString();
+
+        String cantidad = tblReceta.getValueAt(fila, 3).toString();
+
+        cmbProducto.setSelectedItem(producto);
+
+        cmbInsumo.setSelectedItem(insumo);
+
+        txtCantidad.setText(cantidad);
+    }//GEN-LAST:event_tblRecetaMouseClicked
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        // TODO add your handling code here:int fila = tblReceta.getSelectedRow();
+        int fila = tblReceta.getSelectedRow();
+        if (fila == -1) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione una receta de la tabla."
+            );
+
+            return;
+        }
+
+        int respuesta = JOptionPane.showConfirmDialog(
+                this,
+                "¿Está seguro de eliminar esta receta?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (respuesta != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        int idReceta = Integer.parseInt(tblReceta.getValueAt(fila, 0).toString());
+        RecetaDAO dao = new RecetaDAO();
+
+        boolean eliminado = dao.eliminarReceta(idReceta);
+        if (eliminado) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Receta eliminada correctamente."
+            );
+
+            txtCantidad.setText("");
+            cargarTabla();
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo eliminar la receta."
+            );
+        }
+
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void cmbProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbProductoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JComboBox<String> cmbInsumo;
@@ -111,67 +436,99 @@ public class RecetaFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblReceta;
     private javax.swing.JTextField txtCantidad;
     // End of variables declaration//GEN-END:variables
     private void cargarProductos() {
 
-    ProductoDAO dao = new ProductoDAO();
+        ProductoDAO dao = new ProductoDAO();
 
-    try {
+        try {
 
-        ResultSet resultado = dao.consultarProductos();
+            ResultSet resultado = dao.consultarProductos();
 
-        cmbProducto.removeAllItems();
+            cmbProducto.removeAllItems();
 
-        while (resultado.next()) {
+            while (resultado.next()) {
 
-            cmbProducto.addItem(
-                resultado.getInt("codigo_producto")
-                + " - "
-                + resultado.getString("nombre")
+                cmbProducto.addItem(
+                        resultado.getInt("codigo_producto")
+                        + " - "
+                        + resultado.getString("nombre")
+                );
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar productos."
             );
+
+            e.printStackTrace();
         }
-
-    } catch (SQLException e) {
-
-        JOptionPane.showMessageDialog(
-            this,
-            "Error al cargar productos."
-        );
-
-        e.printStackTrace();
     }
-}
-    
+
     private void cargarInsumos() {
 
-    InsumoDAO dao = new InsumoDAO();
+        InsumoDAO dao = new InsumoDAO();
 
-    try {
+        try {
 
-        ResultSet resultado = dao.consultarInsumos();
+            ResultSet resultado = dao.consultarInsumos();
 
-        cmbInsumo.removeAllItems();
+            cmbInsumo.removeAllItems();
 
-        while (resultado.next()) {
+            while (resultado.next()) {
 
-            cmbInsumo.addItem(
-                resultado.getInt("codigo_insumo")
-                + " - "
-                + resultado.getString("nombre")
+                cmbInsumo.addItem(
+                        resultado.getInt("codigo_insumo")
+                        + " - "
+                        + resultado.getString("nombre")
+                );
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar insumos."
             );
+
+            e.printStackTrace();
         }
-
-    } catch (SQLException e) {
-
-        JOptionPane.showMessageDialog(
-            this,
-            "Error al cargar insumos."
-        );
-
-        e.printStackTrace();
     }
-}
+
+    private void cargarTabla() {
+
+        DefaultTableModel modelo = (DefaultTableModel) tblReceta.getModel();
+        modelo.setRowCount(0);
+        RecetaDAO dao = new RecetaDAO();
+        try {
+
+            ResultSet resultado = dao.consultarRecetas();
+            while (resultado.next()) {
+                modelo.addRow(
+                        new Object[]{
+                            resultado.getInt("id_receta"),
+                            resultado.getString("producto"),
+                            resultado.getString("insumo"),
+                            resultado.getDouble("cantidad")
+                        }
+                );
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar las recetas."
+            );
+
+            e.printStackTrace();
+        }
+    }
+
 }

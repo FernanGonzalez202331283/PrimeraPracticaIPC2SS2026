@@ -26,13 +26,9 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
         txtTotal.setEditable(false);
         txtPrecio.setEditable(false);
         txtFecha.setEditable(false);
-        
-        txtFecha.setText(
-                LocalDate.now().toString()
-        );
-        DefaultTableModel modelo =
-            (DefaultTableModel) tblDetalleCompra.getModel();
 
+        txtFecha.setText(LocalDate.now().toString());
+        DefaultTableModel modelo = (DefaultTableModel) tblDetalleCompra.getModel();
         modelo.setRowCount(0);
         cargarInsumos();
     }
@@ -63,36 +59,42 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         cmbInsumo = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Registrar Compra de Insumos");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 40, -1, -1));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 40, -1, -1));
 
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Fecha de compra: ");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 100, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 90, -1, -1));
 
         txtFecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtFechaActionPerformed(evt);
             }
         });
-        getContentPane().add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 80, 190, 40));
+        getContentPane().add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 80, 190, 40));
 
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Cantidad: ");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 210, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 230, -1, -1));
 
+        jLabel4.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Precio Unitario: ");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 280, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 310, -1, -1));
 
         txtCantidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCantidadActionPerformed(evt);
             }
         });
-        getContentPane().add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 190, 40));
-        getContentPane().add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 270, 190, 40));
+        getContentPane().add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 220, 190, 40));
+        getContentPane().add(txtPrecio, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 290, 190, 40));
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -100,7 +102,7 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
                 btnAgregarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 340, 120, 40));
+        getContentPane().add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 360, 120, 40));
 
         tblDetalleCompra.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -115,11 +117,12 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(tblDetalleCompra);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 470, 600, 180));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 510, 600, 180));
 
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Total a pagar: ");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 690, -1, -1));
-        getContentPane().add(txtTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 680, 140, 40));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 740, -1, -1));
+        getContentPane().add(txtTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 710, 140, 40));
 
         btnRegistrarCompra.setText("Registrar Compra");
         btnRegistrarCompra.addActionListener(new java.awt.event.ActionListener() {
@@ -127,13 +130,14 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
                 btnRegistrarCompraActionPerformed(evt);
             }
         });
-        getContentPane().add(btnRegistrarCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 760, -1, 40));
+        getContentPane().add(btnRegistrarCompra, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 790, -1, 40));
 
         btnLimpiar.setText("Limpiar");
-        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 760, 100, 40));
+        getContentPane().add(btnLimpiar, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 780, 100, 40));
 
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Insumo: ");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 150, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 160, -1, -1));
 
         cmbInsumo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbInsumo.addActionListener(new java.awt.event.ActionListener() {
@@ -141,11 +145,15 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
                 cmbInsumoActionPerformed(evt);
             }
         });
-        getContentPane().add(cmbInsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 190, 40));
+        getContentPane().add(cmbInsumo, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 150, 190, 40));
 
         jLabel7.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("DETALLE DE LA COMPRA");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 430, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 480, -1, -1));
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.png"))); // NOI18N
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 870));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -156,116 +164,71 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
 
     private void btnRegistrarCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarCompraActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel modelo =
-            (DefaultTableModel) tblDetalleCompra.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblDetalleCompra.getModel();
+        if (modelo.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Debe agregar al menos un insumo a la compra."
+            );
+            return;
+        }
+        String fecha = txtFecha.getText().trim();
+        double total = Double.parseDouble( txtTotal.getText().trim());
+        int cantidadFilas = modelo.getRowCount();
+        
+        int[] codigos = new int[cantidadFilas];
+        
+        double[] cantidades = new double[cantidadFilas];
+        double[] precios = new double[cantidadFilas];
+        double[] subtotales = new double[cantidadFilas];
+        try {
+            
+            for (int i = 0; i < cantidadFilas; i++) {
+                String textoInsumo = modelo.getValueAt(i, 0).toString();
+                String[] partes = textoInsumo.split(" - ");
+                codigos[i] = Integer.parseInt(partes[0]);
+                cantidades[i] = Double.parseDouble( modelo.getValueAt(i, 1).toString());
+                precios[i] = Double.parseDouble( modelo.getValueAt(i, 2).toString());
+                subtotales[i] = Double.parseDouble( modelo.getValueAt(i, 3).toString() );
+            }
 
-    if (modelo.getRowCount() == 0) {
+        } catch (NumberFormatException e) {
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Debe agregar al menos un insumo a la compra."
-        );
-
-        return;
-    }
-
-    String fecha =
-            txtFecha.getText().trim();
-
-    double total =
-            Double.parseDouble(
-                    txtTotal.getText().trim()
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Existe un dato inválido en la tabla."
             );
 
-    int cantidadFilas =
-            modelo.getRowCount();
-
-    int[] codigos =
-            new int[cantidadFilas];
-
-    double[] cantidades =
-            new double[cantidadFilas];
-
-    double[] precios =
-            new double[cantidadFilas];
-
-    double[] subtotales =
-            new double[cantidadFilas];
-
-    try {
-
-        for (int i = 0; i < cantidadFilas; i++) {
-
-            String textoInsumo =
-                    modelo.getValueAt(i, 0).toString();
-
-            String[] partes =
-                    textoInsumo.split(" - ");
-
-            codigos[i] =
-                    Integer.parseInt(partes[0]);
-
-            cantidades[i] =
-                    Double.parseDouble(
-                            modelo.getValueAt(i, 1).toString()
-                    );
-
-            precios[i] =
-                    Double.parseDouble(
-                            modelo.getValueAt(i, 2).toString()
-                    );
-
-            subtotales[i] =
-                    Double.parseDouble(
-                            modelo.getValueAt(i, 3).toString()
-                    );
+            return;
         }
 
-    } catch (NumberFormatException e) {
+        CompraInsumoDAO dao = new CompraInsumoDAO();
+        boolean registrado
+                = dao.registrarCompra(
+                        fecha,
+                        total,
+                        cantidadFilas,
+                        codigos,
+                        cantidades,
+                        precios,
+                        subtotales
+                );
+        if (registrado) {
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Existe un dato inválido en la tabla."
-        );
-
-        return;
-    }
-
-    CompraInsumoDAO dao =
-            new CompraInsumoDAO();
-
-    boolean registrado =
-            dao.registrarCompra(
-                    fecha,
-                    total,
-                    cantidadFilas,
-                    codigos,
-                    cantidades,
-                    precios,
-                    subtotales
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Compra registrada correctamente."
             );
-
-    if (registrado) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Compra registrada correctamente."
-        );
-
-        modelo.setRowCount(0);
-
-        txtTotal.setText("0.0");
-
-        txtCantidad.setText("");
-
-    } else {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "No se pudo registrar la compra.\n"
-                + "La operación fue cancelada."
-        );
-    }
+            modelo.setRowCount(0);
+            txtTotal.setText("0.0");
+            txtCantidad.setText("");
+        } else {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo registrar la compra.\n"
+                    + "La operación fue cancelada."
+            );
+        }
     }//GEN-LAST:event_btnRegistrarCompraActionPerformed
 
     private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
@@ -275,45 +238,39 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
     private void cmbInsumoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbInsumoActionPerformed
         // TODO add your handling code here:
         if (cmbInsumo.getSelectedItem() == null) {
-        return;
+            return;
         }
 
-        String seleccionado =
-                cmbInsumo.getSelectedItem().toString();
+        String seleccionado = cmbInsumo.getSelectedItem().toString();
 
-        String[] partes =
-                seleccionado.split(" - ");
+        String[] partes = seleccionado.split(" - ");
 
-        int codigoInsumo =
-                Integer.parseInt(partes[0]);
+        int codigoInsumo = Integer.parseInt(partes[0]);
 
         InsumoDAO dao = new InsumoDAO();
 
-        double costo =
-                dao.obtenerCostoInsumo(codigoInsumo);
+        double costo = dao.obtenerCostoInsumo(codigoInsumo);
 
-        txtPrecio.setText(
-                String.valueOf(costo)
-        );
+        txtPrecio.setText( String.valueOf(costo));
     }//GEN-LAST:event_cmbInsumoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
-        if(cmbInsumo.getSelectedItem() == null){
+        if (cmbInsumo.getSelectedItem() == null) {
             JOptionPane.showConfirmDialog(this, "Seleccione un insumo.");
             return;
         }
-        
-        if(txtCantidad.getText().trim().isEmpty()){
+
+        if (txtCantidad.getText().trim().isEmpty()) {
             JOptionPane.showConfirmDialog(this, "ingrese una cantidad");
             return;
         }
-        
-        if(txtPrecio.getText().trim().isEmpty()){
+
+        if (txtPrecio.getText().trim().isEmpty()) {
             JOptionPane.showConfirmDialog(this, "No se encontro el precio del insumo");
             return;
         }
-        
+
         double cantidad;
         try {
             cantidad = Double.parseDouble(txtCantidad.getText().trim());
@@ -321,27 +278,27 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "La cantidad debe de ser numerica");
             return;
         }
-        
-        if(cantidad<=0){
+
+        if (cantidad <= 0) {
             JOptionPane.showMessageDialog(this, "La cantidad debe de ser mayor que cero");
             return;
         }
-        
+
         double precio = Double.parseDouble(txtPrecio.getText().trim());
-        
+
         double subtotal = cantidad * precio;
-        
+
         String insumo = cmbInsumo.getSelectedItem().toString();
-        
+
         DefaultTableModel modelo = (DefaultTableModel) tblDetalleCompra.getModel();
-        
+
         modelo.addRow(
-         new Object[]{
-             insumo,
-             cantidad,
-             precio,
-             subtotal
-         }
+                new Object[]{
+                    insumo,
+                    cantidad,
+                    precio,
+                    subtotal
+                }
         );
         calcularTotal();
         txtCantidad.setText("");
@@ -360,6 +317,7 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDetalleCompra;
     private javax.swing.JTextField txtCantidad;
@@ -368,13 +326,12 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 
-    private void cargarInsumos(){
+    private void cargarInsumos() {
         InsumoDAO dao = new InsumoDAO();
         ResultSet resultado = dao.consultarInsumos();
-        
         try {
             cmbInsumo.removeAllItems();
-            while(resultado.next()){
+            while (resultado.next()) {
                 cmbInsumo.addItem(resultado.getInt("codigo_insumo")
                         + " - "
                         + resultado.getString("nombre")
@@ -384,22 +341,18 @@ public class CompraInsumoFrame extends javax.swing.JInternalFrame {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al cargar insumos");
         }
-        
+
     }
+
     private void calcularTotal() {
 
-        DefaultTableModel modelo =
-                (DefaultTableModel) tblDetalleCompra.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tblDetalleCompra.getModel();
 
         double total = 0;
 
         for (int i = 0; i < modelo.getRowCount(); i++) {
 
-            double subtotal =
-                    Double.parseDouble(
-                            modelo.getValueAt(i, 3).toString()
-                    );
-
+            double subtotal = Double.parseDouble( modelo.getValueAt(i, 3).toString() );
             total += subtotal;
         }
 

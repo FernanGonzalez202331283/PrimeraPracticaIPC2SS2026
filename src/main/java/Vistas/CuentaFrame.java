@@ -4,17 +4,48 @@
  */
 package Vistas;
 
+import ComunicacionesDAO.CuentaDAO;
+import ComunicacionesDAO.DetalleCuentaDAO;
+import ComunicacionesDAO.MesaDAO;
+import ComunicacionesDAO.ProductoDAO;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import modelo.Cuenta;
+import modelo.DetalleCuenta;
+
 /**
  *
  * @author fernan
  */
 public class CuentaFrame extends javax.swing.JInternalFrame {
 
+    private int idCuentaActual = 0;
+    private MesaFrame mesaFrame;
+
     /**
      * Creates new form CuentaFrame
      */
     public CuentaFrame() {
+
         initComponents();
+        this.mesaFrame = mesaFrame;
+        cargarProductos();
+        cargarMesas();
+        cargarMeseros();
+    }
+
+    public CuentaFrame(MesaFrame mesaFrame) {
+        initComponents();
+
+        this.mesaFrame = mesaFrame;
+        cargarProductos();
+        cargarMesas();
+        cargarMeseros();
     }
 
     /**
@@ -26,21 +57,677 @@ public class CuentaFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        cmbMesa = new javax.swing.JComboBox<>();
+        cmbMesero = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblDetalle = new javax.swing.JTable();
+        jLabel6 = new javax.swing.JLabel();
+        txtPropina = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtTotal = new javax.swing.JTextField();
+        btnAbrirCuenta = new javax.swing.JButton();
+        btnAgregarProducto = new javax.swing.JButton();
+        btnCobrarCuenta = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txtCantidad = new javax.swing.JTextField();
+        cmbProducto = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel1.setText("GESTION DE CUENTAS");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(341, 47, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel2.setText("Mesa:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel5.setText("Mesero:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 120, -1, -1));
+
+        cmbMesa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMesaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cmbMesa, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 120, 170, 30));
+
+        cmbMesero.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMesero.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbMeseroActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cmbMesero, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 120, 170, 30));
+
+        tblDetalle.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Producto", "Cantidad", "Precio", "SubTotal"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblDetalle);
+
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 430, 670, 210));
+
+        jLabel6.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel6.setText("Propina: ");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 660, -1, -1));
+
+        txtPropina.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPropinaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtPropina, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 660, 150, 40));
+
+        jLabel7.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel7.setText("Total: ");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 680, 100, 80));
+
+        txtTotal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 710, 150, 40));
+
+        btnAbrirCuenta.setText("Abrir Cuenta");
+        btnAbrirCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbrirCuentaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAbrirCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 180, 130, 60));
+
+        btnAgregarProducto.setText("Agregar Producto");
+        btnAgregarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarProductoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnAgregarProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 350, -1, 40));
+
+        btnCobrarCuenta.setText("Cobrar Cuenta");
+        btnCobrarCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCobrarCuentaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnCobrarCuenta, new org.netbeans.lib.awtextra.AbsoluteConstraints(376, 780, 160, 50));
+
+        jLabel8.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Producto: ");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 300, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Cantidad: ");
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 300, -1, -1));
+        getContentPane().add(txtCantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 300, 140, 30));
+
+        cmbProducto.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbProductoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cmbProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 300, 170, 30));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo.png"))); // NOI18N
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 880, 900));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtPropinaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPropinaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPropinaActionPerformed
+
+    private void cmbMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMesaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbMesaActionPerformed
+
+    private void cmbMeseroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbMeseroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbMeseroActionPerformed
+
+    private void btnAbrirCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirCuentaActionPerformed
+        if (cmbMesa.getSelectedItem() == null) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione una mesa."
+            );
+
+            return;
+        }
+
+        if (cmbMesero.getSelectedItem() == null) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione un mesero."
+            );
+            return;
+        }
+
+        String mesaSeleccionada = cmbMesa.getSelectedItem().toString();
+        String meseroSeleccionado = cmbMesero.getSelectedItem().toString();
+        int numeroMesa;
+        String dpiMesero;
+
+        try {
+            numeroMesa = Integer.parseInt( mesaSeleccionada.split(" - ")[0]);
+            dpiMesero = meseroSeleccionado.split(" - ")[0];
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudieron obtener los datos seleccionados."
+            );
+
+            return;
+        }
+
+        String fecha = LocalDate.now().toString();
+        String horaOcupacion = LocalTime.now() .format(
+                                DateTimeFormatter.ofPattern(
+                                        "HH:mm:ss"
+                                )
+                        );
+
+        Cuenta cuenta = new Cuenta(
+                        0,
+                        numeroMesa,
+                        dpiMesero,
+                        fecha,
+                        horaOcupacion,
+                        null,
+                        "ABIERTA",
+                        0,
+                        0
+                );
+
+        CuentaDAO dao = new CuentaDAO();
+
+        int idCuenta = dao.insertarCuenta(cuenta);
+
+        if (idCuenta > 0) {
+
+            //guardamos el id de la cuenta que acabamos de abrir
+            idCuentaActual = idCuenta;
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Cuenta abierta correctamente."
+            );
+
+            //Actualizamos las mesas disponibles
+            cargarMesas();
+            if (mesaFrame != null && !mesaFrame.isClosed()) {
+                mesaFrame.actualizarMesas();
+            }
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo abrir la cuenta."
+            );
+        }
+    }//GEN-LAST:event_btnAbrirCuentaActionPerformed
+
+    private void btnAgregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarProductoActionPerformed
+
+        // Verificar que exista una cuenta abierta
+        if (idCuentaActual <= 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Primero debe abrir una cuenta."
+            );
+
+            return;
+        }
+
+        // Verificar que haya un producto seleccionado
+        if (cmbProducto.getSelectedItem() == null) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Seleccione un producto."
+            );
+
+            return;
+        }
+
+        // Verificar la cantidad
+        if (txtCantidad.getText().trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Ingrese la cantidad."
+            );
+
+            return;
+        }
+
+        // Obtener el producto seleccionado
+        String productoSeleccionado = cmbProducto.getSelectedItem().toString();
+        int codigoProducto;
+
+        try {
+            codigoProducto = Integer.parseInt(productoSeleccionado.split(" - ")[0]);
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo obtener el código del producto."
+            );
+
+            return;
+        }
+
+        //Obtener la cantidad
+        int cantidad;
+
+        try {
+
+            cantidad
+                    = Integer.parseInt(
+                            txtCantidad.getText().trim()
+                    );
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La cantidad debe ser un número entero."
+            );
+
+            return;
+        }
+
+        //Validar cantidad
+        if (cantidad <= 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La cantidad debe ser mayor a cero."
+            );
+
+            return;
+        }
+        // crea detalle, precioy subtotal que seran calculados en la transaccion
+        DetalleCuenta detalle = new DetalleCuenta(
+                        0,
+                        idCuentaActual,
+                        codigoProducto,
+                        cantidad,
+                        0,
+                        0
+                );
+
+        //Crear DAO
+        DetalleCuentaDAO dao
+                = new DetalleCuentaDAO();
+
+        // Ejecutar la transacción
+        boolean registrado
+                = dao.agregarProductoTransaccion(detalle);
+
+        // Mostrar resultado
+        if (registrado) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Producto agregado correctamente."
+            );
+
+            // Limpiar cantidad
+            txtCantidad.setText("");
+
+            // Actualizar detalle
+            cargarDetalleCuenta();
+
+            // Actualizar total
+            calcularTotal();
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo agregar el producto.\n"
+                    + "Verifique el stock disponible."
+            );
+        }
+    }//GEN-LAST:event_btnAgregarProductoActionPerformed
+
+    private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalActionPerformed
+
+    private void btnCobrarCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarCuentaActionPerformed
+        // TODO add your handling code here:
+
+        //  Verificar que exista una cuenta abierta
+        if (idCuentaActual <= 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Primero debe abrir una cuenta."
+            );
+
+            return;
+        }
+
+        // Obtener la propina
+        double propina = 0;
+
+        if (!txtPropina.getText().trim().isEmpty()) {
+            try {
+                propina = Double.parseDouble(
+                        txtPropina.getText().trim()
+                );
+
+            } catch (NumberFormatException e) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "La propina debe ser un valor numérico."
+                );
+
+                return;
+            }
+        }
+
+        // Validar que la propina no sea negativa
+        if (propina < 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La propina no puede ser negativa."
+            );
+
+            return;
+        }
+
+        // Obtener el total de los productos
+        double totalProductos;
+
+        try {
+
+            totalProductos = Double.parseDouble(
+                    txtTotal.getText().trim()
+            );
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo obtener el total de la cuenta."
+            );
+
+            return;
+        }
+
+        // Verificar que existan productos
+        if (totalProductos <= 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "La cuenta no tiene productos."
+            );
+
+            return;
+        }
+
+        // Calcular el total final incluyendo propina
+        double totalFinal = totalProductos + propina;
+        // Obtener la hora de liberación
+        String horaLiberacion = LocalTime.now().format(
+                        DateTimeFormatter.ofPattern(
+                                "HH:mm:ss"
+                        )
+                );
+
+        // Pagar la cuenta
+        CuentaDAO dao = new CuentaDAO();
+        boolean pagada
+                = dao.pagarCuenta(
+                        idCuentaActual,
+                        horaLiberacion,
+                        propina,
+                        totalFinal
+                );
+
+        // Resultado
+        if (pagada) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Cuenta pagada correctamente.\n"
+                    + "Total: Q"
+                    + String.format("%.2f", totalFinal)
+                    + "\nLa mesa quedó disponible."
+            );
+
+            // Limpiar propina
+            txtPropina.setText("");
+
+            // Limpiar total
+            txtTotal.setText("0.00");
+
+            // Limpiar tabla de detalle
+            DefaultTableModel modelo
+                    = (DefaultTableModel) tblDetalle.getModel();
+
+            modelo.setRowCount(0);
+
+            // Ya no tenemos una cuenta activa
+            idCuentaActual = 0;
+
+            // Actualizar las mesas disponibles
+            cargarMesas();
+            if (mesaFrame != null && !mesaFrame.isClosed()) {
+
+                mesaFrame.actualizarMesas();
+            }
+
+        } else {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo cobrar la cuenta."
+            );
+        }
+    }//GEN-LAST:event_btnCobrarCuentaActionPerformed
+
+    private void cmbProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbProductoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAbrirCuenta;
+    private javax.swing.JButton btnAgregarProducto;
+    private javax.swing.JButton btnCobrarCuenta;
+    private javax.swing.JComboBox<String> cmbMesa;
+    private javax.swing.JComboBox<String> cmbMesero;
+    private javax.swing.JComboBox<String> cmbProducto;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblDetalle;
+    private javax.swing.JTextField txtCantidad;
+    private javax.swing.JTextField txtPropina;
+    private javax.swing.JTextField txtTotal;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarMesas() {
+        MesaDAO dao = new MesaDAO();
+
+        try {
+
+            ResultSet resultado = dao.consultarMesas();
+
+            cmbMesa.removeAllItems();
+
+            while (resultado.next()) {
+
+                String estado
+                        = resultado.getString("estado");
+
+                // Solo mostramos mesas LIBRES
+                if (estado.equals("LIBRE")) {
+
+                    cmbMesa.addItem(
+                            resultado.getInt("numero_mesa")
+                            + " - Mesa "
+                            + resultado.getInt("capacidad")
+                            + " personas"
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar las mesas."
+            );
+
+            e.printStackTrace();
+        }
+    }
+
+    private void cargarMeseros() {
+        CuentaDAO dao = new CuentaDAO();
+        try {
+            ResultSet resultado = dao.consultarMeseros();
+            cmbMesero.removeAllItems();
+            while (resultado.next()) {
+                cmbMesero.addItem(
+                        resultado.getString("dpi")
+                        + " - "
+                        + resultado.getString("nombre")
+                );
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar los meseros."
+            );
+
+            e.printStackTrace();
+        }
+    }
+
+    private void cargarProductos() {
+        ProductoDAO dao = new ProductoDAO();
+        try {
+            ResultSet resultado = dao.consultarProductos();
+            cmbProducto.removeAllItems();
+            while (resultado.next()) {
+                cmbProducto.addItem(
+                        resultado.getInt("codigo_producto")
+                        + " - "
+                        + resultado.getString("nombre")
+                );
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar los productos."
+            );
+
+            e.printStackTrace();
+        }
+    }
+
+    private void cargarDetalleCuenta() {
+
+        DefaultTableModel modelo = (DefaultTableModel) tblDetalle.getModel();
+        // Limpiar la tabla
+        modelo.setRowCount(0);
+
+        // Verificar que exista una cuenta abierta
+        if (idCuentaActual <= 0) {
+            return;
+        }
+
+        DetalleCuentaDAO dao = new DetalleCuentaDAO();
+
+        try {
+
+            ResultSet resultado = dao.consultarDetalles(idCuentaActual);
+            while (resultado.next()) {
+                modelo.addRow(
+                        new Object[]{
+                            resultado.getString("producto"),
+                            resultado.getInt("cantidad"),
+                            resultado.getDouble("precio"),
+                            resultado.getDouble("subtotal")
+                        }
+                );
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar los detalles de la cuenta."
+            );
+
+            e.printStackTrace();
+        }
+    }
+
+    private void calcularTotal() {
+
+        if (idCuentaActual <= 0) {
+            return;
+        }
+
+        DetalleCuentaDAO dao
+                = new DetalleCuentaDAO();
+
+        double total
+                = dao.consultarTotal(idCuentaActual);
+
+        txtTotal.setText(
+                String.valueOf(total)
+        );
+    }
 }
