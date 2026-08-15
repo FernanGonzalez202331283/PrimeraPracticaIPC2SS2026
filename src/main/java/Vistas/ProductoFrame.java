@@ -16,6 +16,8 @@ import modelo.Producto;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
+import java.util.concurrent.ExecutionException;
 import javax.swing.ImageIcon;
 
 
@@ -46,12 +48,12 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txtCodigoProducto = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         cmbCategoria = new javax.swing.JComboBox<>();
+        txtCodigoProducto = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtPrecio = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -71,17 +73,16 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         jLabel1.setText("Gestion de Productos");
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 30, -1, -1));
 
+        jLabel3.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel3.setText("Nombre:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 190, -1, -1));
+
         jLabel2.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel2.setText("Codigo:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, -1, -1));
-        getContentPane().add(txtCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 110, 190, 40));
-
-        jLabel3.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Nombre:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 190, -1, -1));
-        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 180, 190, 30));
+        jLabel2.setText("Codigo: ");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, -1, -1));
+        getContentPane().add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 190, 190, 30));
 
         jLabel4.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
@@ -90,6 +91,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
 
         cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         getContentPane().add(cmbCategoria, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 250, 190, 30));
+        getContentPane().add(txtCodigoProducto, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 130, 100, 30));
 
         jLabel5.setFont(new java.awt.Font("Ubuntu", 3, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -144,7 +146,7 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(tblProductos);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 630, 680, 190));
-        getContentPane().add(lblVistaImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 120, 190, 160));
+        getContentPane().add(lblVistaImagen, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 80, 190, 160));
 
         btnExportar.setText("Exportar HTML");
         btnExportar.addActionListener(new java.awt.event.ActionListener() {
@@ -308,175 +310,143 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         ProductoDAO dao = new ProductoDAO();
 
-    try {
+        try {
+            ResultSet resultado = dao.consultarProductos();
+            StringBuilder html = new StringBuilder();
+            html.append("""
+                    <!DOCTYPE html>
+                    <html lang="es">
+                    <head>
+                        <meta charset="UTF-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        ResultSet resultado = dao.consultarProductos();
+                        <title>JavaBeans Café - Menú</title>
 
-        StringBuilder html = new StringBuilder();
+                        <style>
+                            body {
+                                font-family: Arial, sans-serif;
+                                background-color: #f5f1e8;
+                                margin: 0;
+                                padding: 30px;
+                            }
 
-        html.append("""
-                <!DOCTYPE html>
-                <html lang="es">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            h1 {
+                                text-align: center;
+                            }
 
-                    <title>JavaBeans Café - Menú</title>
+                            .menu {
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                                gap: 25px;
+                                max-width: 1200px;
+                                margin: auto;
+                            }
 
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            background-color: #f5f1e8;
-                            margin: 0;
-                            padding: 30px;
-                        }
+                            .producto {
+                                background-color: white;
+                                border-radius: 15px;
+                                padding: 20px;
+                                text-align: center;
+                                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+                            }
 
-                        h1 {
-                            text-align: center;
-                        }
+                            .producto img {
+                                width: 100%;
+                                height: 200px;
+                                object-fit: cover;
+                                border-radius: 10px;
+                            }
 
-                        .menu {
-                            display: grid;
-                            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-                            gap: 25px;
-                            max-width: 1200px;
-                            margin: auto;
-                        }
+                            .producto h2 {
+                                margin-bottom: 10px;
+                            }
 
-                        .producto {
-                            background-color: white;
-                            border-radius: 15px;
-                            padding: 20px;
-                            text-align: center;
-                            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-                        }
+                            .categoria {
+                                font-size: 14px;
+                                color: #777;
+                            }
 
-                        .producto img {
-                            width: 100%;
-                            height: 200px;
-                            object-fit: cover;
-                            border-radius: 10px;
-                        }
+                            .precio {
+                                font-size: 20px;
+                                font-weight: bold;
+                            }
+                        </style>
 
-                        .producto h2 {
-                            margin-bottom: 10px;
-                        }
+                    </head>
 
-                        .categoria {
-                            font-size: 14px;
-                            color: #777;
-                        }
+                    <body>
 
-                        .precio {
-                            font-size: 20px;
-                            font-weight: bold;
-                        }
-                    </style>
+                        <h1>JavaBeans Café</h1>
 
-                </head>
+                        <div class="menu">
+                    """);
 
-                <body>
+            boolean hayProductos = false;
+            while (resultado.next()) {
+                hayProductos = true;
+                String nombre = resultado.getString("nombre");
+                String categoria = resultado.getString("categoria");
+                double precio = resultado.getDouble("precio");
+                String fotografia = resultado.getString("fotografia");
+                html.append("<div class=\"producto\">");
+                html.append("<img src=\"")
+                        .append(fotografia)
+                        .append("\" alt=\"")
+                        .append(nombre)
+                        .append("\">");
+                html.append("<h2>")
+                        .append(nombre)
+                        .append("</h2>");
+                html.append("<p class=\"categoria\">")
+                        .append(categoria)
+                        .append("</p>");
+                html.append("<p class=\"precio\">Q")
+                        .append(String.format("%.2f", precio))
+                        .append("</p>");
+                html.append("</div>");
+            }
+            html.append("""
+                        </div>
+                    </body>
+                    </html>
+                    """);
+            resultado.close();
+            if (!hayProductos) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "No existen productos registrados."
+                );
+                return;
+            }
 
-                    <h1>JavaBeans Café</h1>
+            File archivo = new File("menu.html");
+            try (BufferedWriter escritor = new BufferedWriter( new FileWriter(archivo))) {
 
-                    <div class="menu">
-                """);
-
-        boolean hayProductos = false;
-
-        while (resultado.next()) {
-
-            hayProductos = true;
-
-            String nombre =
-                    resultado.getString("nombre");
-
-            String categoria =
-                    resultado.getString("categoria");
-
-            double precio =
-                    resultado.getDouble("precio");
-
-            String fotografia =
-                    resultado.getString("fotografia");
-
-            html.append("<div class=\"producto\">");
-
-            html.append("<img src=\"")
-                    .append(fotografia)
-                    .append("\" alt=\"")
-                    .append(nombre)
-                    .append("\">");
-
-            html.append("<h2>")
-                    .append(nombre)
-                    .append("</h2>");
-
-            html.append("<p class=\"categoria\">")
-                    .append(categoria)
-                    .append("</p>");
-
-            html.append("<p class=\"precio\">Q")
-                    .append(String.format("%.2f", precio))
-                    .append("</p>");
-
-            html.append("</div>");
-        }
-
-        html.append("""
-                    </div>
-
-                </body>
-                </html>
-                """);
-
-        resultado.close();
-
-        if (!hayProductos) {
+                escritor.write(html.toString());
+            }
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Menú HTML exportado correctamente."
+            );
+            Desktop.getDesktop().open(archivo);
+        } catch (SQLException e) {
 
             JOptionPane.showMessageDialog(
                     this,
-                    "No existen productos registrados."
+                    "Error al consultar los productos."
             );
 
-            return;
+            e.printStackTrace();
+
+        } catch (IOException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo generar el archivo HTML."
+            );
+
+            e.printStackTrace();
         }
-
-        File archivo = new File("menu.html");
-
-        try (BufferedWriter escritor =
-                     new BufferedWriter(
-                             new FileWriter(archivo)
-                     )) {
-
-            escritor.write(html.toString());
-        }
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Menú HTML exportado correctamente."
-        );
-
-        Desktop.getDesktop().open(archivo);
-
-    } catch (SQLException e) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Error al consultar los productos."
-        );
-
-        e.printStackTrace();
-
-    } catch (IOException e) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "No se pudo generar el archivo HTML."
-        );
-
-        e.printStackTrace();
-    }
     }//GEN-LAST:event_btnExportarActionPerformed
 
 
@@ -551,34 +521,39 @@ public class ProductoFrame extends javax.swing.JInternalFrame {
 
     private void mostrarImagen(String ruta) {
 
-        if (ruta == null || ruta.isEmpty()) {
+     if (ruta == null || ruta.isEmpty()) {
 
-            lblVistaImagen.setIcon(null);
-            lblVistaImagen.setText("Sin imagen");
+         lblVistaImagen.setIcon(null);
+         lblVistaImagen.setText("Sin imagen");
 
-            return;
-        }
+         return;
+     }
 
-        File archivo = new File("src/main/resources/" + ruta);
+     try {
 
-        if (!archivo.exists()) {
+         URL url = new URL(ruta);
 
-            lblVistaImagen.setIcon(null);
-            lblVistaImagen.setText("Imagen no encontrada");
+         ImageIcon icono = new ImageIcon(url);
 
-            return;
-        }
-        ImageIcon icono = new ImageIcon(archivo.getAbsolutePath());
+         Image imagen = icono.getImage();
 
-        Image imagen = icono.getImage();
-        Image imagenEscalada = imagen.getScaledInstance(
-                        lblVistaImagen.getWidth(),
-                        lblVistaImagen.getHeight(),
-                        Image.SCALE_SMOOTH
-                );
+         Image imagenEscalada = imagen.getScaledInstance(
+                 lblVistaImagen.getWidth(),
+                 lblVistaImagen.getHeight(),
+                 Image.SCALE_SMOOTH
+         );
 
-        lblVistaImagen.setIcon( new ImageIcon(imagenEscalada));
+         lblVistaImagen.setIcon(
+                 new ImageIcon(imagenEscalada)
+         );
 
-        lblVistaImagen.setText("");
-    }
+         lblVistaImagen.setText("");
+
+     } catch (Exception e) {
+
+         lblVistaImagen.setIcon(null);
+         lblVistaImagen.setText("URL no válida");
+
+     }
+ }
 }

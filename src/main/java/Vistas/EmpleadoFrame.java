@@ -233,108 +233,110 @@ public class EmpleadoFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtFechaActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-     if (!validarDatos()) {
-        return;
-    }
+        
+        if (!validarDatos()) {
+            return;
+        }
 
-    String dpi = txtDpi.getText().trim();
-    String nombre = txtNombre.getText().trim();
-    String rol = cmbRol.getSelectedItem().toString();
-    String jornada = cmbJornada.getSelectedItem().toString();
-    double salario = Double.parseDouble(txtSalario.getText().trim());
-    String fecha = txtFecha.getText().trim();
+        String dpi = txtDpi.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String rol = cmbRol.getSelectedItem().toString();
+        String jornada = cmbJornada.getSelectedItem().toString();
+        double salario = Double.parseDouble(txtSalario.getText().trim());
+        String fecha = txtFecha.getText().trim();
 
-    EmpleadoDAO empleadoDAO = new EmpleadoDAO();
+        EmpleadoDAO empleadoDAO = new EmpleadoDAO();
 
-    // Verificar si el DPI ya existe
-    if (empleadoDAO.existeEmpleado(dpi)) {
+        // Verificar si el DPI ya existe
+        if (empleadoDAO.existeEmpleado(dpi)) {
 
-        JOptionPane.showMessageDialog(
-                this,
-                "El DPI ingresado ya está registrado."
+            JOptionPane.showMessageDialog(
+                    this,
+                    "El DPI ingresado ya está registrado."
+            );
+
+            txtDpi.requestFocus();
+
+            return;
+        }
+
+        Empleado empleado = new Empleado(
+                dpi,
+                nombre,
+                rol,
+                jornada,
+                salario,
+                fecha,
+                true
         );
 
-        txtDpi.requestFocus();
+        boolean registrado =
+                empleadoDAO.insertarEmpleado(empleado);
 
-        return;
-    }
+        if (registrado) {
 
-    Empleado empleado = new Empleado(
-            dpi,
-            nombre,
-            rol,
-            jornada,
-            salario,
-            fecha,
-            true
-    );
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Empleado registrado correctamente."
+            );
 
-    boolean registrado =
-            empleadoDAO.insertarEmpleado(empleado);
+            // Actualizar la tabla
+            cargarTabla();
 
-    if (registrado) {
+            // Limpiar los campos
+            limpiarCampos();
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Empleado registrado correctamente."
-        );
+        } else {
 
-        // Actualizar la tabla
-        cargarTabla();
-
-        // Limpiar los campos
-        limpiarCampos();
-
-    } else {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "No se pudo registrar el empleado."
-        );
-    }
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se pudo registrar el empleado."
+            );
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void cargarTabla() {
 
-    DefaultTableModel modelo =
-            (DefaultTableModel) tblEmpleados.getModel();
+        DefaultTableModel modelo =
+                (DefaultTableModel) tblEmpleados.getModel();
 
-    modelo.setRowCount(0);
+        modelo.setRowCount(0);
 
-    EmpleadoDAO empleadoDAO =
-            new EmpleadoDAO();
+        EmpleadoDAO empleadoDAO =
+                new EmpleadoDAO();
 
-    try {
+        try {
 
-        ResultSet resultado =
-                empleadoDAO.obtenerEmpleados();
+            ResultSet resultado =
+                    empleadoDAO.obtenerEmpleados();
 
-        while (resultado.next()) {
+            while (resultado.next()) {
 
-            Object[] fila = {
+                Object[] fila = {
 
-                resultado.getString("dpi"),
-                resultado.getString("nombre"),
-                resultado.getString("rol"),
-                resultado.getString("jornada"),
-                resultado.getDouble("salario"),
-                resultado.getDate("fecha_contratacion"),
-                resultado.getBoolean("estado")
-            };
+                    resultado.getString("dpi"),
+                    resultado.getString("nombre"),
+                    resultado.getString("rol"),
+                    resultado.getString("jornada"),
+                    resultado.getDouble("salario"),
+                    resultado.getDate("fecha_contratacion"),
+                    resultado.getBoolean("estado")
+                };
 
-            modelo.addRow(fila);
+                modelo.addRow(fila);
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Error al cargar los empleados."
+            );
+
+            e.printStackTrace();
         }
-
-    } catch (SQLException e) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Error al cargar los empleados."
-        );
-
-        e.printStackTrace();
     }
-}
+    
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         // TODO add your handling code here:
         if(!validarDatos()){

@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import modelo.Cuenta;
@@ -33,7 +35,7 @@ public class CuentaFrame extends javax.swing.JInternalFrame {
     public CuentaFrame() {
 
         initComponents();
-        this.mesaFrame = mesaFrame;
+        txtTotal.setEditable(false);
         cargarProductos();
         cargarMesas();
         cargarMeseros();
@@ -255,6 +257,7 @@ public class CuentaFrame extends javax.swing.JInternalFrame {
 
             return;
         }
+        
 
         String fecha = LocalDate.now().toString();
         String horaOcupacion = LocalTime.now() .format(
@@ -289,12 +292,11 @@ public class CuentaFrame extends javax.swing.JInternalFrame {
                     "Cuenta abierta correctamente."
             );
 
-            //Actualizamos las mesas disponibles
-            cargarMesas();
+            actualizarTodasLasCuentas();
+
             if (mesaFrame != null && !mesaFrame.isClosed()) {
                 mesaFrame.actualizarMesas();
             }
-
         } else {
 
             JOptionPane.showMessageDialog(
@@ -730,4 +732,47 @@ public class CuentaFrame extends javax.swing.JInternalFrame {
                 String.valueOf(total)
         );
     }
+    public void actualizarMesasDisponibles() {
+         System.out.println(
+            "ACTUALIZANDO CUENTA: " + this
+        );
+
+        cargarMesas();
+    }
+    
+        private void actualizarTodasLasCuentas() {
+
+       JDesktopPane desktop = getDesktopPane();
+
+    if (desktop == null) {
+
+        System.out.println(
+                "ERROR: getDesktopPane() devolvio NULL"
+        );
+
+        return;
+    }
+
+    System.out.println(
+            "Cantidad de ventanas: "
+            + desktop.getAllFrames().length
+    );
+
+    for (JInternalFrame frame : desktop.getAllFrames()) {
+
+        System.out.println(
+                "Ventana: "
+                + frame.getClass().getSimpleName()
+        );
+
+        if (frame instanceof CuentaFrame) {
+
+            CuentaFrame cuentaFrame =
+                    (CuentaFrame) frame;
+
+            cuentaFrame.actualizarMesasDisponibles();
+        }
+    }
+        }
 }
+

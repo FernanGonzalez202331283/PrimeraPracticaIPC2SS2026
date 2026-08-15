@@ -32,7 +32,6 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         desktopPane = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
         empleado = new javax.swing.JMenu();
         menuEmpleado = new javax.swing.JMenuItem();
         Nomina = new javax.swing.JMenu();
@@ -78,9 +77,6 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
         );
 
         getContentPane().add(desktopPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1250, 980));
-
-        jMenu1.setText("Archivo");
-        jMenuBar1.add(jMenu1);
 
         empleado.setText("Personal");
         empleado.addActionListener(new java.awt.event.ActionListener() {
@@ -320,7 +316,6 @@ public class FrmVentaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu empleado;
     private javax.swing.JMenu inventario;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem menuCompra;
     private javax.swing.JMenuItem menuCuenta;
